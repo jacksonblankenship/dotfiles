@@ -20,7 +20,7 @@ export NVM_DIR="$HOME/.nvm"
 alias update="brew upgrade && brew update && omz update && npm update -g && vim +PluginUpdate +qall"
 
 # Dotfile tracking
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfile='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # === Just for Fun ===
 
