@@ -22,7 +22,10 @@ export NVM_DIR="$HOME/.nvm"
 alias update="brew upgrade && brew update && omz update && npm update -g && vim +PluginUpdate +qall"
 
 # Dotfile tracking
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 # Print a quote with a penguin
 fortune -s | cowsay -f tux | lolcat --spread 1.0
+
+# Start the flylance-app development environment
+alias fly="cd ~/projects/flylance-app && npm run dev & open -a \"Google Chrome\" http://localhost:3000/ && ttab"
