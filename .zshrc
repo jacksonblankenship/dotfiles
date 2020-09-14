@@ -25,4 +25,4 @@ alias update="brew upgrade && brew update && omz update && npm update -g && vim 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 # Print a quote with a penguin
-fortune -s | cowsay -f tux
+fortune -s | cowsay -f tux | lolcat --spread 1.0
