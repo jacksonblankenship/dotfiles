@@ -18,6 +18,9 @@ export NVM_DIR="$HOME/.nvm"
 
 # === Custom Configurations ===
 
+# VS Code CLI
+code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+
 # Catch-all update command for various package managers and utilities
 alias update="brew upgrade && brew update && omz update && npm update -g && vim +PluginUpdate +qall"
 
@@ -27,5 +30,5 @@ alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 # Print a quote with a penguin
 fortune -s | cowsay -f tux | lolcat --spread 1.0
 
-# Start the flylance-app development environment
-alias fly="cd ~/projects/flylance-app && npm run dev & open -a \"Google Chrome\" http://localhost:3000/ && ttab"
+# Quick start the flylance-app development environment 
+alias fly="cd ~/projects/flylance-app && ttab && open -a \"Google Chrome\" http://localhost:3000/ https://github.com/flylance-io/flylance-app/issues && code . && npm run dev"
