@@ -1,33 +1,27 @@
-# uncomment to profile .zshrc performance (also uncomment command at very bottom)
-# zmodload zsh/zprof
+source $(brew --prefix)/share/antigen/antigen.zsh
 
-# path oh-my-zsh installation.
-export ZSH="/Users/jacksonblankenship/.oh-my-zsh"
+# Load the oh-my-zsh's library.
+antigen use oh-my-zsh
 
-# theme
-ZSH_THEME="robbyrussell"
-
-# zsh-nvm configuration
+# Plugin variables
 export NVM_LAZY_LOAD=true
 export NVM_COMPLETION=true
 
-# plugins
-plugins=(zsh-nvm git)
+# Antigen bundles
+antigen bundle git
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-completions
+antigen bundle lukechilds/zsh-nvm
 
-# source oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+# Load the theme.
+antigen theme robbyrussell
 
-# vs code cli
-code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
+# Complete antigen configuration
+antigen apply
 
-# catch-all update command for various package managers and utilities
-alias update="brew upgrade && brew update && omz update && nvm upgrade && npm update -g && vim +PluginUpdate +qall"
+# Source aliases
+source $HOME/.aliases
 
-# dotfile tracking
-alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-
-# print a quote with a penguin
+# Print header
 fortune -s | cowsay -f tux
-
-# uncomment to profile .zshrc performance (also uncomment command at very top)
-# zprof
