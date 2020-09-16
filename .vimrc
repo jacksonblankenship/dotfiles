@@ -8,7 +8,7 @@ call vundle#begin()
 " Required Vundle plugin
 Plugin 'VundleVim/Vundle.vim'	
 
-" === Plugins ===
+" Plugins 
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'scrooloose/syntastic'
@@ -16,6 +16,7 @@ Plugin 'scrooloose/syntastic'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-" === Other Settings ===
+" Other settings 
 syntax on
 set number
+set backspace=indent,eol,start

@@ -1,6 +1,6 @@
 source $(brew --prefix)/share/antigen/antigen.zsh
 
-# Load the oh-my-zsh's library.
+# Load the oh-my-zsh's library
 antigen use oh-my-zsh
 
 # Plugin variables
@@ -14,7 +14,7 @@ antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 antigen bundle lukechilds/zsh-nvm
 
-# Load the theme.
+# Load the theme
 antigen theme robbyrussell
 
 # Complete antigen configuration
