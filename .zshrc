@@ -9,10 +9,12 @@ export NVM_COMPLETION=true
 
 # Antigen bundles
 antigen bundle git
+antigen bundle thefuck
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-completions
 antigen bundle lukechilds/zsh-nvm
+antigen bundle agkozak/zsh-z
 
 # Load the theme
 antigen theme robbyrussell

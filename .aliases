@@ -2,7 +2,7 @@
 code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
 # catch-all update command for various package managers and utilities
-alias update="brew upgrade && brew update && antigen update && omz update && nvm upgrade && npm update -g && vim +PluginUpdate +qall"
+alias update="brew upgrade && brew update && antigen update && nvm upgrade && npm update -g && vim +PluginUpdate +qall"
 
 # dotfile tracking
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
