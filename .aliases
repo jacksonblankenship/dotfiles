@@ -6,3 +6,6 @@ alias update="brew upgrade && brew update && antigen update && nvm upgrade && np
 
 # dotfile tracking
 alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+
+# dotfiles markdown editor
+alias dotedit="gh gist edit add88f8d05447f09008974a90cb178db"
