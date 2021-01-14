@@ -1,4 +1,4 @@
-# vs code cli
+# vs code cli override
 code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
 # catch-all update command for various package managers and utilities
