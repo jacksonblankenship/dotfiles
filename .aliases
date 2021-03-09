@@ -9,3 +9,6 @@ alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 
 # dotfiles markdown editor
 alias dotedit="gh gist edit add88f8d05447f09008974a90cb178db"
+
+# delete linear-related git branches
+alias delin="git branch | grep '\<FE-*\>' | xargs git branch -D"
