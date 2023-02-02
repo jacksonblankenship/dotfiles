@@ -278,5 +278,3 @@ echo /usr/local/bin/fish | sudo tee -a /etc/shells
 
 # change default shell to fish
 chsh -s /usr/local/bin/fish
-
-_echo "info" "Bootstrap process complete. Changes will take effect after you completely restart your terminal."

@@ -10,5 +10,10 @@ This command will override existing dotfiles and replace them with the dotfiles 
 
 ```sh
 # TODO: Fix this link when repo is migrated from "dot" to "dotfiles"
-/bin/zsh -c "$(curl -s https://raw.githubusercontent.com/jacksonblankenship/dot/main/.config/dotfiles/bootstrap.sh)" && printf "\033c" && exec zsh
+# run the bootstrap script
+/bin/sh -c "$(curl -s https://raw.githubusercontent.com/jacksonblankenship/dot/main/.config/dotfiles/bootstrap.sh)" \
+  # clear the screen
+  && printf "\033c" \
+  # replace the current shell
+  && exec fish
 ```
