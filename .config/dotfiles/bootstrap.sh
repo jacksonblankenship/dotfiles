@@ -214,7 +214,7 @@ fi
 
 # install homebrew if it doesn't already exist
 # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
-if command -v brew >/dev/null 2>&1; then
+if ! command -v brew >/dev/null 2>&1; then
   _echo "info" "Installing homebrew"
 
   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
