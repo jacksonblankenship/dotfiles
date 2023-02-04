@@ -94,7 +94,7 @@ _echo "info" "Cloning dotfiles from $dotfiles_https"
 
 # remove conflicting directory if one exists
 if [[ -d "$dotfiles_git_dir" ]]; then
-  rm -rf "$dotfiles_git_dir"
+  sudo rm -rf "$dotfiles_git_dir"
 fi
 
 # clone the dotfiles
