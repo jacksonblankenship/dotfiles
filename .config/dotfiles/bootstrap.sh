@@ -191,7 +191,7 @@ if command -v brew >/dev/null 2>&1; then
     exit 1
   fi
 
-  if ! brew remove --cask --force "$(brew list)"; then
+  if ! brew remove --cask --force "$(brew list --cask)"; then
     _echo "error" "Unable to uninstall homebrew casks"
     exit 1
   fi
