@@ -212,8 +212,6 @@ if command -v brew >/dev/null 2>&1; then
   fi
 fi
 
-exit 1
-
 _echo "info" "Installing homebrew"
 
 # re-install homebrew
@@ -265,6 +263,8 @@ for package in "${homebrew_dependencies[@]}"; do
     command brew bundle dump
   fi
 done
+
+exit 1
 
 # # install all required python dependencies
 # for package in "${python_dependencies[@]}"; do
