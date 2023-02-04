@@ -159,13 +159,13 @@ if ! asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git; then
   exit 1
 fi
 
-_echo "info" "Adding python plugin to asdf"
-
-# add pythong plugin to asdf
-if ! asdf plugin add python https://github.com/asdf-community/asdf-python; then
-  _echo "error" "Unable to add python plugin to adsf"
-  exit 1
-fi
+# _echo "info" "Adding python plugin to asdf"
+#
+# # add pythong plugin to asdf
+# if ! asdf plugin add python https://github.com/asdf-community/asdf-python; then
+#   _echo "error" "Unable to add python plugin to adsf"
+#   exit 1
+# fi
 
 _echo "info" "Installing tool verions listed in $asdf_tool_versions"
 
