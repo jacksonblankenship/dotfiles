@@ -228,7 +228,7 @@ if ! command -v brew >/dev/null 2>&1; then
     exit 1
   fi
 
-  # temporarially source homebrew for purposes of installation
+  # source homebrew for purposes of installation
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
@@ -327,8 +327,15 @@ for directory in "${directories[@]}"; do
   fi
 done
 
+# source homebrew to update references to installed packages
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+_echo "info" "Adding $(where fish) to /etc/shells"
+
 # add fish to /etc/shells
 where fish | sudo tee -a /etc/shells
+
+_echo "info" "Changing default shell to fish"
 
 # change default shell to fish
 chsh -s "$(where fish)"
