@@ -119,8 +119,9 @@ fi
 asdf_dir="$HOME/.asdf"
 asdf_tool_versions="$HOME/.tool-versions"
 
+_echo "info" "Installing asdf"
+
 if ! command -v asdf >/dev/null 2>&1; then
-  _echo "info" "Installing asdf"
 
   if [[ -d "$asdf_dir" ]]; then
     rm -rf "$asdf_dir"
@@ -132,15 +133,17 @@ if ! command -v asdf >/dev/null 2>&1; then
   fi
 
   _echo "warn" "Successfully installed asdf, but it may not be properly configured with fish. Read more under the \"Fish & Git\" documentation. https://asdf-vm.com/guide/getting-started.html#_2-download-asdf"
+
+  # temporarially source asdf for purposes of installation
+  # shellcheck source=/dev/null
+  . "$asdf_dir/asdf.sh"
 fi
 
 # asdf configurations
 # update asdf and, add nodejs and python plugins, and install versions against .tool-versions
 # https://asdf-vm.com/manage/core.html
 
-# temporarially source asdf for purposes of installation
-# shellcheck source=/dev/null
-. "$asdf_dir/asdf.sh"
+_echo "info" "Updating asdf"
 
 # update asdf as the given branch in this script may be out of date
 if ! asdf update; then
@@ -148,17 +151,23 @@ if ! asdf update; then
   exit 1
 fi
 
+_echo "info" "Adding nodejs plugin to asdf"
+
 # add node.js plugin to asdf
 if ! asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git; then
   _echo "error" "Unable to add nodejs plugin to adsf"
   exit 1
 fi
 
+_echo "info" "Adding python plugin to asdf"
+
 # add pythong plugin to asdf
 if ! asdf plugin add python https://github.com/asdf-community/asdf-python; then
   _echo "error" "Unable to add python plugin to adsf"
   exit 1
 fi
+
+_echo "info" "Installing tool verions listed in $asdf_tool_versions"
 
 # install versions listed under .tool-versions
 if [[ ! -f "$asdf_tool_versions" ]]; then
@@ -171,20 +180,22 @@ else
   fi
 fi
 
+exit 0
+
+_echo "info" "Installing homebrew"
+
 # install homebrew
 # https://brew.sh/#install
-
 if ! command -v brew >/dev/null 2>&1; then
-  _echo "info" "Installing homebrew"
-
   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
     _echo "error" "Unable to install homebrew"
     exit 1
   fi
 fi
 
-# homebrew package installation
+_echo "info" "Installing packages using Brewfile"
 
+# homebrew package installation
 if [[ -f "$HOME/Brewfile" ]]; then
   if ! brew bundle install; then
     _echo "error" "Unable to install packages using Brewfile"
