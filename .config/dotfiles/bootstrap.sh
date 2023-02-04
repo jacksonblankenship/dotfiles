@@ -322,7 +322,7 @@ for directory in "${directories[@]}"; do
 done
 
 # add fish to /etc/shells
-# echo /usr/local/bin/fish | sudo tee -a /etc/shells
+echo /usr/local/bin/fish | sudo tee -a /etc/shells
 
 # change default shell to fish
-# chsh -s /usr/local/bin/fish
+chsh -s /usr/local/bin/fish
