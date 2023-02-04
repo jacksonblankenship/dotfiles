@@ -1,7 +1,11 @@
 # current lts for nodejs
+
 # https://github.com/nodejs/Release
-nodejs lts-hydrogen
+
+nodejs lts
 
 # python latest bugfix version (aka maintenance/stable)
+
 # https://devguide.python.org/versions/
+
 python 3.11
