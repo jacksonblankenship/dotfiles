@@ -180,49 +180,51 @@ else
   fi
 fi
 
-# uninstall homebrew if it currently exists
-# https://github.com/homebrew/install#uninstall-homebrew
+# # uninstall homebrew if it currently exists
+# # https://github.com/homebrew/install#uninstall-homebrew
+# if command -v brew >/dev/null 2>&1; then
+#
+#   if [[ $(brew list --formula) ]]; then
+#     _echo "info" "Uninstalling pre-existing homebrew formula"
+#
+#     # shellcheck disable=SC2046
+#     if ! brew remove --force $(brew list --formula); then
+#       _echo "error" "Unable to uninstall homebrew formula"
+#       exit 1
+#     fi
+#   fi
+#
+#   if [[ $(brew list --cask) ]]; then
+#     _echo "info" "Uninstalling pre-existing homebrew casks"
+#
+#     # shellcheck disable=SC2046
+#     if ! brew remove --cask --force $(brew list --cask); then
+#       _echo "error" "Unable to uninstall homebrew casks"
+#       exit 1
+#     fi
+#   fi
+#
+#   _echo "info" "Uninstalling existing homebrew installation"
+#
+#   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
+#     _echo "error" "Unable to uninstall homebrew"
+#     exit 1
+#   fi
+# fi
+
+# install homebrew if it doesn't already exist
+# https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
 if command -v brew >/dev/null 2>&1; then
+  _echo "info" "Installing homebrew"
 
-  if [[ $(brew list --formula) ]]; then
-    _echo "info" "Uninstalling pre-existing homebrew formula"
-
-    # shellcheck disable=SC2046
-    if ! brew remove --force $(brew list --formula); then
-      _echo "error" "Unable to uninstall homebrew formula"
-      exit 1
-    fi
-  fi
-
-  if [[ $(brew list --cask) ]]; then
-    _echo "info" "Uninstalling pre-existing homebrew casks"
-
-    # shellcheck disable=SC2046
-    if ! brew remove --cask --force $(brew list --cask); then
-      _echo "error" "Unable to uninstall homebrew casks"
-      exit 1
-    fi
-  fi
-
-  _echo "info" "Uninstalling existing homebrew installation"
-
-  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
-    _echo "error" "Unable to uninstall homebrew"
+  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+    _echo "error" "Unable to install homebrew"
     exit 1
   fi
+
+  # temporarially source homebrew for purposes of installation
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
-
-_echo "info" "Installing homebrew"
-
-# re-install homebrew
-# https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
-if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-  _echo "error" "Unable to install homebrew"
-  exit 1
-fi
-
-# temporarially source homebrew for purposes of installation
-eval "$(/opt/homebrew/bin/brew shellenv)"
 
 _echo "info" "Installing packages using Brewfile"
 
@@ -263,8 +265,6 @@ for package in "${homebrew_dependencies[@]}"; do
     command brew bundle dump
   fi
 done
-
-exit 1
 
 # # install all required python dependencies
 # for package in "${python_dependencies[@]}"; do
@@ -314,11 +314,10 @@ fi
 
 # install all required python dependencies
 for directory in "${directories[@]}"; do
-  _echo "info" "Creating directory $directory"
+  if [[ ! -d $directory ]]; then
+    _echo "info" "Creating directory $directory"
 
-  if ! mkdir -p "$directory" >/dev/null 2>&1; then
-    _echo "error" "Unable to create directory $directory"
-    exit 1
+    mkdir -p "$directory"
   fi
 done
 
