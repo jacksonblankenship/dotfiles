@@ -186,6 +186,16 @@ fi
 if command -v brew >/dev/null 2>&1; then
   _echo "info" "Uninstalling existing homebrew installation"
 
+  if ! brew remove --force "$(brew list --formula)"; then
+    _echo "error" "Unable to uninstall homebrew formula"
+    exit 1
+  fi
+
+  if ! brew remove --cask --force "$(brew list)"; then
+    _echo "error" "Unable to uninstall homebrew casks"
+    exit 1
+  fi
+
   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
     _echo "error" "Unable to uninstall homebrew"
     exit 1
