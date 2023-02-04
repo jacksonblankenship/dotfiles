@@ -199,6 +199,9 @@ if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/insta
   exit 1
 fi
 
+# temporarially source homebrew for purposes of installation
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 _echo "info" "Installing packages using Brewfile"
 
 # homebrew package installation
