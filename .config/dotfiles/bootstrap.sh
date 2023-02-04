@@ -187,17 +187,21 @@ if command -v brew >/dev/null 2>&1; then
 
   _echo "info" "Uninstalling pre-existing homebrew formula"
 
-  if ! brew remove --force "$(brew list --formula)"; then
-    _echo "error" "Unable to uninstall homebrew formula"
-    exit 1
-  fi
+  brew list --formula | while IFS='' read -r formula; do
+    if ! brew remove --force "$formula"; then
+      _echo "error" "Unable to uninstall homebrew formula $formula"
+      exit 1
+    fi
+  done
 
   _echo "info" "Uninstalling pre-existing homebrew casks"
 
-  if ! brew remove --cask --force "$(brew list --cask)"; then
-    _echo "error" "Unable to uninstall homebrew casks"
-    exit 1
-  fi
+  brew list --cask | while IFS='' read -r cask; do
+    if ! brew remove --cask --force "$cask"; then
+      _echo "error" "Unable to uninstall homebrew cask $cask"
+      exit 1
+    fi
+  done
 
   _echo "info" "Uninstalling existing homebrew installation"
 
