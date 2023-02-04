@@ -1,11 +1,2 @@
-# current lts for nodejs
-
-# https://github.com/nodejs/Release
-
-nodejs lts
-
-# python latest bugfix version (aka maintenance/stable)
-
-# https://devguide.python.org/versions/
-
+nodejs lts-gallium
 python 3.11
