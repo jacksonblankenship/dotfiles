@@ -214,21 +214,22 @@ fi
 
 # if homebrew isn't found, attempt to source it just in case
 if ! command -v brew >/dev/null 2>&1; then
-  eval "$(/opt/homebrew/bin/brew shellenv)" >/dev/null 2>&1
-fi
+  if eval "$(/opt/homebrew/bin/brew shellenv)" >/dev/null 2>&1; then
+    # found existing homebrew installation that wasn't sourced
+    _echo "info" "Sourced existing homebrew installation"
+  else
+    _echo "info" "Installing homebrew"
 
-# install homebrew if it doesn't already exist
-# https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
-if ! command -v brew >/dev/null 2>&1; then
-  _echo "info" "Installing homebrew"
+    # install homebrew
+    # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
+    if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+      _echo "error" "Unable to install homebrew"
+      exit 1
+    fi
 
-  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-    _echo "error" "Unable to install homebrew"
-    exit 1
+    # temporarially source homebrew for purposes of installation
+    eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
-
-  # temporarially source homebrew for purposes of installation
-  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 _echo "info" "Installing packages using Brewfile"
