@@ -212,6 +212,11 @@ fi
 #   fi
 # fi
 
+# if homebrew isn't found, attempt to source it just in case
+if ! command -v brew >/dev/null 2>&1; then
+  eval "$(/opt/homebrew/bin/brew shellenv)" >/dev/null 2>&1
+fi
+
 # install homebrew if it doesn't already exist
 # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
 if ! command -v brew >/dev/null 2>&1; then
