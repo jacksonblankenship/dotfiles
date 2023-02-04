@@ -32,10 +32,10 @@ homebrew_dependencies=(
   "docker"
 )
 
-# pip3 dependencies required for this shell's core configuration
-python_dependencies=(
-  "pynvim"
-)
+# # pip3 dependencies required for this shell's core configuration
+# python_dependencies=(
+#   "pynvim"
+# )
 
 # general directories to create
 directories=(
@@ -180,17 +180,22 @@ else
   fi
 fi
 
-exit 0
-
 _echo "info" "Installing homebrew"
 
-# install homebrew
-# https://brew.sh/#install
-if ! command -v brew >/dev/null 2>&1; then
-  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-    _echo "error" "Unable to install homebrew"
+# uninstall homebrew if it currently exists
+# https://github.com/homebrew/install#uninstall-homebrew
+if command -v brew >/dev/null 2>&1; then
+  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
+    _echo "error" "Unable to uninstall homebrew"
     exit 1
   fi
+fi
+
+# re-install homebrew
+# https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
+if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+  _echo "error" "Unable to install homebrew"
+  exit 1
 fi
 
 _echo "info" "Installing packages using Brewfile"
@@ -233,15 +238,17 @@ for package in "${homebrew_dependencies[@]}"; do
   fi
 done
 
-# install all required python dependencies
-for package in "${python_dependencies[@]}"; do
-  _echo "info" "Validating $package is installed"
+# # install all required python dependencies
+# for package in "${python_dependencies[@]}"; do
+#   _echo "info" "Validating $package is installed"
+#
+#   if ! command pip3 install "$package"; then
+#     _echo "error" "Unable to install pip3 package $package"
+#     exit 1
+#   fi
+# done
 
-  if ! command pip3 install "$package"; then
-    _echo "error" "Unable to install pip3 package $package"
-    exit 1
-  fi
-done
+exit 1
 
 # generate Ed25519 key pair by authenticating with GitHub
 if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
