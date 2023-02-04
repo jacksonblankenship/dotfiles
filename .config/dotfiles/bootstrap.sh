@@ -214,7 +214,7 @@ fi
 
 # if homebrew isn't found, attempt to source it just in case
 if ! command -v brew >/dev/null 2>&1; then
-  if eval "$(/opt/homebrew/bin/brew shellenv)" >/dev/null 2>&1; then
+  if eval "$(/opt/homebrew/bin/brew shellenv)"; then
     # found existing homebrew installation that wasn't sourced
     _echo "info" "Sourced existing homebrew installation"
   else
@@ -328,7 +328,7 @@ for directory in "${directories[@]}"; do
 done
 
 # add fish to /etc/shells
-where fish | sudo tee -a /etc/shells
+# where fish | sudo tee -a /etc/shells
 
 # change default shell to fish
-chsh -s "$(where fish)"
+# chsh -s "$(where fish)"
