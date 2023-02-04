@@ -185,7 +185,7 @@ _echo "info" "Installing homebrew"
 # uninstall homebrew if it currently exists
 # https://github.com/homebrew/install#uninstall-homebrew
 if command -v brew >/dev/null 2>&1; then
-  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
+  if ! NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
     _echo "error" "Unable to uninstall homebrew"
     exit 1
   fi
@@ -193,7 +193,7 @@ fi
 
 # re-install homebrew
 # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
-if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+if ! NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
   _echo "error" "Unable to install homebrew"
   exit 1
 fi
