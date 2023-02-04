@@ -206,13 +206,13 @@ if command -v brew >/dev/null 2>&1; then
 
   _echo "info" "Uninstalling existing homebrew installation"
 
-  exit 1
-
   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
     _echo "error" "Unable to uninstall homebrew"
     exit 1
   fi
 fi
+
+exit 1
 
 _echo "info" "Installing homebrew"
 
