@@ -212,24 +212,24 @@ fi
 #   fi
 # fi
 
-# if homebrew isn't found, attempt to source it just in case
+# if homebrew isn't found, attempt to source it
 if ! command -v brew >/dev/null 2>&1; then
-  if eval "$(/opt/homebrew/bin/brew shellenv)"; then
-    # found existing homebrew installation that wasn't sourced
-    _echo "info" "Sourced existing homebrew installation"
-  else
-    _echo "info" "Installing homebrew"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
-    # install homebrew
-    # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
-    if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-      _echo "error" "Unable to install homebrew"
-      exit 1
-    fi
+# if homebrew still isn't found, install it
+if ! command -v brew >/dev/null 2>&1; then
+  _echo "info" "Installing homebrew"
 
-    # temporarially source homebrew for purposes of installation
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+  # install homebrew
+  # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
+  if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
+    _echo "error" "Unable to install homebrew"
+    exit 1
   fi
+
+  # temporarially source homebrew for purposes of installation
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 _echo "info" "Installing packages using Brewfile"
@@ -328,7 +328,7 @@ for directory in "${directories[@]}"; do
 done
 
 # add fish to /etc/shells
-# where fish | sudo tee -a /etc/shells
+where fish | sudo tee -a /etc/shells
 
 # change default shell to fish
-# chsh -s "$(where fish)"
+chsh -s "$(where fish)"
