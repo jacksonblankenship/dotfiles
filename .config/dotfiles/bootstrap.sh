@@ -231,7 +231,7 @@ fi
 
 # install all required homebrew dependencies
 for package in "${homebrew_dependencies[@]}"; do
-  _echo "info" "Validating $package is installed"
+  _echo "info" "Validating required dependency $package is installed"
 
   if ! command brew list "$package" >/dev/null 2>&1; then
     if ! command brew install "$package"; then
@@ -253,8 +253,6 @@ done
 #     exit 1
 #   fi
 # done
-
-exit 1
 
 # generate Ed25519 key pair by authenticating with GitHub
 if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
