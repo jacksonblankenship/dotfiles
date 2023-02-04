@@ -184,20 +184,24 @@ fi
 # https://github.com/homebrew/install#uninstall-homebrew
 if command -v brew >/dev/null 2>&1; then
 
-  _echo "info" "Uninstalling pre-existing homebrew formula"
+  if [[ $(brew list --formula) ]]; then
+    _echo "info" "Uninstalling pre-existing homebrew formula"
 
-  # shellcheck disable=SC2046
-  if ! brew remove --force $(brew list --formula); then
-    _echo "error" "Unable to uninstall homebrew formula"
-    exit 1
+    # shellcheck disable=SC2046
+    if ! brew remove --force $(brew list --formula); then
+      _echo "error" "Unable to uninstall homebrew formula"
+      exit 1
+    fi
   fi
 
-  _echo "info" "Uninstalling pre-existing homebrew casks"
+  if [[ $(brew list --cask) ]]; then
+    _echo "info" "Uninstalling pre-existing homebrew casks"
 
-  # shellcheck disable=SC2046
-  if ! brew remove --cask --force $(brew list --cask); then
-    _echo "error" "Unable to uninstall homebrew casks"
-    exit 1
+    # shellcheck disable=SC2046
+    if ! brew remove --cask --force $(brew list --cask); then
+      _echo "error" "Unable to uninstall homebrew casks"
+      exit 1
+    fi
   fi
 
   _echo "info" "Uninstalling existing homebrew installation"
