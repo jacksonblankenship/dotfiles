@@ -327,15 +327,12 @@ for directory in "${directories[@]}"; do
   fi
 done
 
-# source homebrew to update references to installed packages
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
-_echo "info" "Adding $(where fish) to /etc/shells"
+_echo "info" "Adding $(which fish) to /etc/shells"
 
 # add fish to /etc/shells
-where fish | sudo tee -a /etc/shells
+which fish | sudo tee -a /etc/shells
 
 _echo "info" "Changing default shell to fish"
 
 # change default shell to fish
-chsh -s "$(where fish)"
+chsh -s "$(which fish)"
