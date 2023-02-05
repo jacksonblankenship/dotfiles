@@ -132,7 +132,11 @@ if ! command -v asdf >/dev/null 2>&1; then
     exit 1
   fi
 
-  _echo "warn" "Successfully installed asdf, but it may not be properly configured with fish. Read more under the \"Fish & Git\" documentation. https://asdf-vm.com/guide/getting-started.html#_2-download-asdf"
+  # symlink asdf completions to fish config
+  if [[ -f $HOME/.asdf/completions/asdf.fish ]]; then
+    mkdir -p "$HOME/.config/fish/completions"
+    ln -s "$HOME/.asdf/completions/asdf.fish" "$HOME/.config/fish/completions"
+  fi
 
   # temporarially source asdf for purposes of installation
   # shellcheck source=/dev/null
