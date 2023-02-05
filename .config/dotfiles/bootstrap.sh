@@ -327,7 +327,7 @@ for directory in "${directories[@]}"; do
   fi
 done
 
-if ! grep "$(which fish)" /etc/shells; then
+if ! grep "$(which fish)" /etc/shells >/dev/null 2>&1; then
   _echo "info" "Adding $(which fish) to /etc/shells"
 
   # add fish to /etc/shells
