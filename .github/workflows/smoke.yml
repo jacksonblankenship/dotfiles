@@ -1,0 +1,12 @@
+name: Smoke Test CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Execute full install
+        run: .config/dotfiles/bootstrap.sh
