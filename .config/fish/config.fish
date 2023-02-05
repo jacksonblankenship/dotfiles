@@ -13,6 +13,9 @@ set --export VISUAL nvim
 # initialize asdf
 source ~/.asdf/asdf.fish
 
+# initialize homebrew
+eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+
 # configure interactive sessions
 if status is-interactive
     # initialize starship theme (only in interactive sessions)
