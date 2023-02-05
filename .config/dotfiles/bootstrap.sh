@@ -336,3 +336,5 @@ _echo "info" "Changing default shell to fish"
 
 # change default shell to fish
 chsh -s "$(which fish)"
+
+_echo "info" "Bootstrap complete. Changes will take effect next time you create a terminal session."
