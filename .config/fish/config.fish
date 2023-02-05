@@ -14,7 +14,7 @@ set --export VISUAL nvim
 source ~/.asdf/asdf.fish
 
 # initialize homebrew
-eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # configure interactive sessions
 if status is-interactive
