@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Execute full install
-        run: .config/dotfiles/bootstrap.sh
+        run: bash .config/dotfiles/bootstrap.sh
