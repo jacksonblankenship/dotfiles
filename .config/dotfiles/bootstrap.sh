@@ -327,10 +327,12 @@ for directory in "${directories[@]}"; do
   fi
 done
 
-_echo "info" "Adding $(which fish) to /etc/shells"
+if ! grep "$(which fish)" /etc/shells; then
+  _echo "info" "Adding $(which fish) to /etc/shells"
 
-# add fish to /etc/shells
-which fish | sudo tee -a /etc/shells
+  # add fish to /etc/shells
+  which fish | sudo tee -a /etc/shells
+fi
 
 _echo "info" "Changing default shell to fish"
 
