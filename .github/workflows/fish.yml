@@ -38,7 +38,5 @@ jobs:
             
             if cat "$file" | fish -n; then
               echo "No syntax errors found in $file"
-            else
-              echo "Syntax error discovered in $file"
             fi
           done
