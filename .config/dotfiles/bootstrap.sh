@@ -235,16 +235,22 @@ for package in "${homebrew_dependencies[@]}"; do
   fi
 done
 
+# dynamically generated brew source command (as string) to pass to fish
+brew_source="eval \$($(which brew) shellenv)"
+
 # install fisher
 # https://github.com/jorgebucaran/fisher#installation
-if ! fish -c "curl -sL https://git.io/fisher | source"; then
+fisher_install="${brew_source} && curl -sL https://git.io/fisher | source"
+if ! fish -c "$fisher_install"; then
   _echo "error" "Unable to install fisher"
   exit 1
 fi
 
 # install fisher plugins if any are listed in the fish config
 if [ -f "$HOME/.config/fish/fish_plugins" ]; then
-  if ! fish -c "fisher update"; then
+  fisher_update="${brew_source} && fisher update"
+
+  if ! fish -c "$fisher_update"; then
     _echo "error" "Unable to install fisher plugins"
     exit 1
   fi
@@ -280,13 +286,13 @@ if [[ -z "$CI" ]]; then
     _echo "error" "Unable to change dotfiles repo protocol to SSH"
     exit 1
   fi
+fi
 
-  # set the default git editor to neovim
-  if [[ "$(gh config get editor)" != "nvim" ]]; then
-    _echo "info" "Changing default git editor to neovim"
+# set the default git editor to neovim
+if [[ "$(gh config get editor)" != "nvim" ]]; then
+  _echo "info" "Changing default git editor to neovim"
 
-    gh config set editor nvim
-  fi
+  gh config set editor nvim
 fi
 
 # install all required python dependencies
