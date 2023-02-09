@@ -30,7 +30,7 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: |
-            **.fish
+            **/*.fish
       - name: List changed files
         run: |
           for file in ${{ steps.changed-files-fish.outputs.all_changed_files }}; do
