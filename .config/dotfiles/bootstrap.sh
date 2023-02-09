@@ -204,16 +204,13 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# skip brewfile installation in ci
-if [[ -z "$CI" ]]; then
-  _echo "info" "Installing packages using Brewfile"
+_echo "info" "Installing packages using Brewfile"
 
-  # homebrew package installation
-  if [[ -f "$HOME/.Brewfile" ]]; then
-    if ! brew bundle install --global; then
-      _echo "error" "Unable to install packages using Brewfile"
-      exit 1
-    fi
+# homebrew package installation
+if [[ -f "$HOME/.Brewfile" ]]; then
+  if ! brew bundle install --global; then
+    _echo "error" "Unable to install packages using Brewfile"
+    exit 1
   fi
 fi
 
@@ -227,11 +224,8 @@ for package in "${homebrew_dependencies[@]}"; do
       exit 1
     fi
 
-    # skip updating the brewfile in ci
-    if [[ -z "$CI" ]]; then
-      # update Brewfile to include the dependency
-      command brew bundle dump --force --global
-    fi
+    # update Brewfile to include the dependency
+    command brew bundle dump --force --global
   fi
 done
 
