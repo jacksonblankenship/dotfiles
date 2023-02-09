@@ -18,6 +18,12 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # configure interactive sessions
 if status is-interactive
+    # give neofetch some breathing room
+    echo -e "\n"
+
+    # show neofetch
+    neofetch
+
     # initialize starship theme (only in interactive sessions)
     starship init fish | source
 end
