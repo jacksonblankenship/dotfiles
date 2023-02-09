@@ -30,9 +30,10 @@ jobs:
         uses: tj-actions/changed-files@v35
         with:
           files: |
-            **/*.fish
+            **.fish
       - name: Check syntax in changed fish files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "Checking syntax for $file"
             cat "$file" | fish -n
           done
