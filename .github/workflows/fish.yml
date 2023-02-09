@@ -26,11 +26,13 @@ jobs:
       - name: Install fish
         run: brew install fish
       - name: Get changed files
-        id: changed-files
+        id: changed-files-fish
         uses: tj-actions/changed-files@v35
+        with:
+          files: |
+            *.fish
       - name: List changed files
         run: |
-          echo $steps.changed-files.outputs.all_changed_files
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for file in ${{ steps.changed-files-fish.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
