@@ -1,9 +1,14 @@
 name: Smoke Test CI
 
-on: [push]
+on:
+  push:
+    paths:
+      - ".config/dotfiles/bootstrap.sh"
+      - ".Brewfile"
+      - ".tool-versions"
 
 jobs:
-  build:
+  bootstrap:
     runs-on: macOS-latest
 
     steps:
