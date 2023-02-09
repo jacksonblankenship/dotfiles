@@ -3,7 +3,7 @@
 # github information
 # if this is modified, ~/.config/fish/functions/dotfiles.fish should be updated
 github_username="jacksonblankenship"
-dotfiles_repo_name="dot"
+dotfiles_repo_name="dotfiles"
 
 # https/ssh urls for the dotfiles repository on github
 dotfiles_path="${github_username}/${dotfiles_repo_name}.git"

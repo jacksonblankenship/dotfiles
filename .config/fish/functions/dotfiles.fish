@@ -1,3 +1,3 @@
 function dotfiles -w dotfiles
-  git --git-dir=$HOME/.dot/ --work-tree=$HOME $argv
+  git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $argv
 end
