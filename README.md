@@ -18,6 +18,8 @@
   </a>
 </p>
 
+![](https://github.com/jacksonblankenship/dotfiles/.github/demo.gif)
+
 <p align="center">
   <a href="#installation">Installation</a> •
   <a href="#usage">Usage</a>
