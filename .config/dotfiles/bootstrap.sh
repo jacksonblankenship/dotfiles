@@ -288,7 +288,10 @@ fi
 
 _echo "info" "Changing default shell to fish"
 
-# change default shell to fish
-chsh -s "$(which fish)"
+# skip chsh in ci
+if [[ -z "$CI" ]]; then
+  # change default shell to fish
+  chsh -s "$(which fish)"
+fi
 
 _echo "info" "Bootstrap complete. Changes will take effect next time you create a terminal session."
