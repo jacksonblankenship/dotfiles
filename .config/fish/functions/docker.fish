@@ -1,5 +1,5 @@
 # docker wrapper to add some helpful additions
-function docker -w docker
+function docker --wraps docker
   switch $argv[1]
     # destroy everything docker
     case die

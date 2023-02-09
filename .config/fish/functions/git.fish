@@ -1,5 +1,5 @@
 # git wrapper to extend core git functionality
-function git -w git
+function git --wraps git
   switch $argv[1]
     # put a repo into a "work in progress" state
     case wip
