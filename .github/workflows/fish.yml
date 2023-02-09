@@ -1,18 +1,16 @@
 name: Fish Syntax Check
 
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - "**.fish"
-#   pull_request:
-#     branches:
-#       - main
-#     paths:
-#       - "**.fish"
-
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.fish"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.fish"
 
 jobs:
   fish:
