@@ -6,8 +6,6 @@
 
 <p align="center">My personal and highly opinionated macOS configuration, built with <a href="https://fishshell.com/" target="_blank">fish</a> and <a href="https://sw.kovidgoyal.net/kitty" target="_blank">kitty</a>. This dotfile management solution was inspired by <a href="https://news.ycombinator.com/item?id=11071754" target="_blank">SneakyCobra's post</a> on HackerNews. If you're looking for a friendlier explanation, Atlassian has a <a href="https://www.atlassian.com/git/tutorials/dotfiles" target="_blank">great post</a> that I'd recommend you check out.</p>
 
-<br />
-
 <p align="center">
   <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml">
     <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml/badge.svg">
