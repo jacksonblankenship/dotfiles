@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-echo This script should fail
+echo This script should pass
 
-echo $SHELL
+echo "$SHELL"
