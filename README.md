@@ -10,6 +10,9 @@
   <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml">
     <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml/badge.svg">
   </a>
+  <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/shellcheck.yml">
+    <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/shellcheck.yml/badge.svg">
+  </a>
 </p>
 
 <p align="center">
