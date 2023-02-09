@@ -1,5 +1,5 @@
 # function to update all packages
-function update --description "Update all relevant dependencies" -w update
+function update --description "Update all relevant dependencies"
   echo (set_color green) "[ ✅ ] Updating asdf core" (set_color normal)
   if ! command asdf update
     echo (set_color red) "[ ❌ ] Failed to update asdf core" (set_color normal)
