@@ -13,6 +13,8 @@ set --export VISUAL nvim
 # initialize asdf
 source "$HOME/.asdf/asdf.fish"
 
+echo "CI variable is equal to :: $CI"
+
 # initialize homebrew if not in CI (manually handled in ci)
 if test -z "$CI"
     eval "$(/opt/homebrew/bin/brew shellenv)"

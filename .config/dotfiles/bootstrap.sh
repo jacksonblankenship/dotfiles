@@ -241,6 +241,7 @@ brew_source="eval \$($(which brew) shellenv)"
 # install fisher
 # https://github.com/jorgebucaran/fisher#installation
 fisher_install="${brew_source} && curl -sL https://git.io/fisher | source"
+echo "fisher install command equal to :: $fisher_install"
 if ! fish -c "$fisher_install"; then
   _echo "error" "Unable to install fisher"
   exit 1
@@ -249,6 +250,7 @@ fi
 # install fisher plugins if any are listed in the fish config
 if [ -f "$HOME/.config/fish/fish_plugins" ]; then
   fisher_update="${brew_source} && fisher update"
+  echo "fisher update command equal to :: $fisher_update"
 
   if ! fish -c "$fisher_update"; then
     _echo "error" "Unable to install fisher plugins"
