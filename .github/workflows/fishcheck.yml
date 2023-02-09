@@ -23,13 +23,13 @@ jobs:
           fetch-depth: 0
       - name: Install fish
         run: brew install fish
-      - name: Get modified fish files
+      - name: Identify modified fish files
         id: changed-files
         uses: tj-actions/changed-files@v35
         with:
           files: |
             **/*.fish
-      - name: Check syntax in modified fish files
+      - name: Perform syntax checking on modified fish files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
