@@ -1,7 +1,17 @@
-name: Smoke Test
+name: Smoke Tests
 
 on:
   push:
+    branches:
+      - main
+    paths:
+      - ".Brewfile"
+      - ".tool-versions"
+      - ".config/dotfiles/bootstrap.sh"
+      - ".github/workflows/smoke.yml"
+  pull_request:
+    branches:
+      - main
     paths:
       - ".Brewfile"
       - ".tool-versions"
@@ -10,8 +20,8 @@ on:
 
 jobs:
   bootstrap:
+    name: Smoke test bootstrap script
     runs-on: macOS-12
-
     steps:
       - uses: actions/checkout@v3
       - name: Execute bootstrap script
