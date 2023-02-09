@@ -11,10 +11,13 @@ set --export EDITOR nvim
 set --export VISUAL nvim
 
 # initialize asdf
-source ~/.asdf/asdf.fish
+source "$HOME/.asdf/asdf.fish"
 
-# initialize homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# initialize homebrew if not in CI (manually handled in ci)
+if test -z "$CI"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+end
+
 
 # configure interactive sessions
 if status is-interactive
