@@ -1,4 +1,4 @@
-name: Fish Syntax Check
+name: FishCheck
 
 on:
   push:
@@ -13,8 +13,8 @@ on:
       - "**.fish"
 
 jobs:
-  fish:
-    name: Fish
+  fishcheck:
+    name: FishCheck
     runs-on: macOS-12
     steps:
       - name: Checkout files
@@ -23,13 +23,14 @@ jobs:
           fetch-depth: 0
       - name: Install fish
         run: brew install fish
-      - name: Get changed fish files
+      - name: Get modified fish files
         id: changed-files
         uses: tj-actions/changed-files@v35
         with:
           files: |
             **/*.fish
-      - name: Check syntax in changed fish files
+      - name: Check syntax in modified fish files
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "Checking $file"
