@@ -14,4 +14,3 @@ function git -w git
       command git $argv
   end
 end
-
