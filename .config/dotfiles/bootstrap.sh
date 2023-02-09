@@ -204,7 +204,7 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# skip brewfile install in ci
+# skip brewfile installation in ci
 if [[ -z "$CI" ]]; then
   _echo "info" "Installing packages using Brewfile"
 
@@ -235,29 +235,6 @@ for package in "${homebrew_dependencies[@]}"; do
   fi
 done
 
-# dynamically generated brew source command (as string) to pass to fish
-brew_source="eval \$($(which brew) shellenv)"
-
-# install fisher
-# https://github.com/jorgebucaran/fisher#installation
-fisher_install="${brew_source} && curl -sL https://git.io/fisher | source"
-echo "fisher install command equal to :: $fisher_install"
-if ! fish -c "$fisher_install"; then
-  _echo "error" "Unable to install fisher"
-  exit 1
-fi
-
-# install fisher plugins if any are listed in the fish config
-if [ -f "$HOME/.config/fish/fish_plugins" ]; then
-  fisher_update="${brew_source} && fisher update"
-  echo "fisher update command equal to :: $fisher_update"
-
-  if ! fish -c "$fisher_update"; then
-    _echo "error" "Unable to install fisher plugins"
-    exit 1
-  fi
-fi
-
 # skip github key generation and https => ssh protocol switch in ci
 if [[ -z "$CI" ]]; then
   # generate Ed25519 key pair by authenticating with GitHub
@@ -280,14 +257,14 @@ if [[ -z "$CI" ]]; then
       exit 1
     fi
   fi
+fi
 
-  _echo "info" "Changing dotfiles repo protocol to SSH"
+_echo "info" "Changing dotfiles repo protocol to SSH"
 
-  # change the bare repo's git protocol from https to ssh
-  if ! git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" remote set-url origin "$dotfiles_ssh"; then
-    _echo "error" "Unable to change dotfiles repo protocol to SSH"
-    exit 1
-  fi
+# change the bare repo's git protocol from https to ssh
+if ! git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" remote set-url origin "$dotfiles_ssh"; then
+  _echo "error" "Unable to change dotfiles repo protocol to SSH"
+  exit 1
 fi
 
 # set the default git editor to neovim
@@ -297,7 +274,7 @@ if [[ "$(gh config get editor)" != "nvim" ]]; then
   gh config set editor nvim
 fi
 
-# install all required python dependencies
+# create standard directories
 for directory in "${directories[@]}"; do
   if [[ ! -d $directory ]]; then
     _echo "info" "Creating directory $directory"

@@ -13,13 +13,17 @@ set --export VISUAL nvim
 # initialize asdf
 source "$HOME/.asdf/asdf.fish"
 
-echo "CI variable is equal to :: $CI"
+# initialize homebrew
+eval (/opt/homebrew/bin/brew shellenv)
 
-# initialize homebrew if not in CI (manually handled in ci)
-if test -z "$CI"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+# install fisher if not found
+if status is-interactive && ! functions --query fisher
+    # install fisher
+    curl -sL https://git.io/fisher | source
+
+    # install all plugins listed under .config/fish/fish_plugins
+    fisher update
 end
-
 
 # configure interactive sessions
 if status is-interactive
