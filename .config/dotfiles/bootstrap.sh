@@ -30,6 +30,8 @@ homebrew_dependencies=(
   "gh"
   # docker is required for our custom docker wrapper
   "docker"
+  # az is required for our custom docker wrapper
+  "az"
   # gnupg is required for the asdf yarn plugin
   "gpg"
 )
