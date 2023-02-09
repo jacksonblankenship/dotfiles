@@ -60,7 +60,7 @@ _echo() {
   esac
 }
 
-# skip user interaction in CI
+# skip user interaction in ci
 if [[ -z "$CI" ]]; then
   # verify the user knows wtf they're about to do
   echo
@@ -204,17 +204,16 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-_echo "info" "Installing packages using Brewfile"
+# skip brewfile install in ci
+if [[ -z "$CI" ]]; then
+  _echo "info" "Installing packages using Brewfile"
 
-# temp debugging
-cat "$HOME/.Brewfile"
-ls -la "$HOME"
-
-# homebrew package installation
-if [[ -f "$HOME/.Brewfile" ]]; then
-  if ! brew bundle install --global; then
-    _echo "error" "Unable to install packages using Brewfile"
-    exit 1
+  # homebrew package installation
+  if [[ -f "$HOME/.Brewfile" ]]; then
+    if ! brew bundle install --global; then
+      _echo "error" "Unable to install packages using Brewfile"
+      exit 1
+    fi
   fi
 fi
 
@@ -228,60 +227,66 @@ for package in "${homebrew_dependencies[@]}"; do
       exit 1
     fi
 
-    # update Brewfile to include the dependency
-    command brew bundle dump --force --global
+    # skip updating the brewfile in ci
+    if [[ -z "$CI" ]]; then
+      # update Brewfile to include the dependency
+      command brew bundle dump --force --global
+    fi
   fi
 done
 
 # install fisher
 # https://github.com/jorgebucaran/fisher#installation
-if ! curl -sL https://git.io/fisher | source; then
+if ! fish -c "curl -sL https://git.io/fisher | source"; then
   _echo "error" "Unable to install fisher"
   exit 1
 fi
 
 # install fisher plugins if any are listed in the fish config
 if [ -f "$HOME/.config/fish/fish_plugins" ]; then
-  if ! fisher update; then
+  if ! fish -c "fisher update"; then
     _echo "error" "Unable to install fisher plugins"
     exit 1
   fi
 fi
 
-# generate Ed25519 key pair by authenticating with GitHub
-if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
-  # if currently authenticated with GitHub, sign out
-  if gh auth status >/dev/null 2>&1; then
+# skip github key generation and https => ssh protocol switch in ci
+if [[ -z "$CI" ]]; then
+  # generate Ed25519 key pair by authenticating with GitHub
+  if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
+    # if currently authenticated with GitHub, sign out
+    if gh auth status >/dev/null 2>&1; then
 
-    _echo "info" "Logging out of gh-cli"
+      _echo "info" "Logging out of gh-cli"
 
-    if ! gh auth logout; then
-      _echo "error" "Unable to log out of gh-cli"
+      if ! gh auth logout; then
+        _echo "error" "Unable to log out of gh-cli"
+        exit 1
+      fi
+    fi
+
+    _echo "info" "Authenticating with GitHub"
+
+    if ! gh auth login --hostname github.com --git-protocol ssh --web; then
+      _echo "error" "Unable to authenticate with GitHub"
       exit 1
     fi
   fi
 
-  _echo "info" "Authenticating with GitHub"
+  _echo "info" "Changing dotfiles repo protocol to SSH"
 
-  if ! gh auth login --hostname github.com --git-protocol ssh --web; then
-    _echo "error" "Unable to authenticate with GitHub"
+  # change the bare repo's git protocol from https to ssh
+  if ! git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" remote set-url origin "$dotfiles_ssh"; then
+    _echo "error" "Unable to change dotfiles repo protocol to SSH"
     exit 1
   fi
-fi
 
-_echo "info" "Changing dotfiles repo protocol to SSH"
+  # set the default git editor to neovim
+  if [[ "$(gh config get editor)" != "nvim" ]]; then
+    _echo "info" "Changing default git editor to neovim"
 
-# change the bare repo's git protocol from https to ssh
-if ! git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" remote set-url origin "$dotfiles_ssh"; then
-  _echo "error" "Unable to change dotfiles repo protocol to SSH"
-  exit 1
-fi
-
-# set the default git editor to neovim
-if [[ "$(gh config get editor)" != "nvim" ]]; then
-  _echo "info" "Changing default git editor to neovim"
-
-  gh config set editor nvim
+    gh config set editor nvim
+  fi
 fi
 
 # install all required python dependencies
