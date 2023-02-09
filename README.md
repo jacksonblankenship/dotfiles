@@ -1,3 +1,5 @@
+![Smoke Test](https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml/badge.svg)
+
 # Install
 
 Before continuing, be sure you've installed macOS command line tools
