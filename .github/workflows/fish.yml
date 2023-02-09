@@ -1,0 +1,33 @@
+name: Fish Syntax Check
+
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - "**.fish"
+#   pull_request:
+#     branches:
+#       - main
+#     paths:
+#       - "**.fish"
+
+on: [push]
+
+jobs:
+  fish:
+    name: Fish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install fish
+        run: brew install fish
+      - name: List all changed files
+        run: |
+          echo $steps.changed-files.outputs.all_changed_files
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
