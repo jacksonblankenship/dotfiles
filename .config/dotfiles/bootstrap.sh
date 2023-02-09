@@ -32,11 +32,6 @@ homebrew_dependencies=(
   "docker"
 )
 
-# # pip3 dependencies required for this shell's core configuration
-# python_dependencies=(
-#   "pynvim"
-# )
-
 # general directories to create
 directories=(
   "$HOME/projects"
@@ -163,14 +158,6 @@ if ! asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git; then
   exit 1
 fi
 
-# _echo "info" "Adding python plugin to asdf"
-#
-# # add pythong plugin to asdf
-# if ! asdf plugin add python https://github.com/asdf-community/asdf-python; then
-#   _echo "error" "Unable to add python plugin to adsf"
-#   exit 1
-# fi
-
 _echo "info" "Installing tool verions listed in $asdf_tool_versions"
 
 # install versions listed under .tool-versions
@@ -183,38 +170,6 @@ else
     exit 1
   fi
 fi
-
-# # uninstall homebrew if it currently exists
-# # https://github.com/homebrew/install#uninstall-homebrew
-# if command -v brew >/dev/null 2>&1; then
-#
-#   if [[ $(brew list --formula) ]]; then
-#     _echo "info" "Uninstalling pre-existing homebrew formula"
-#
-#     # shellcheck disable=SC2046
-#     if ! brew remove --force $(brew list --formula); then
-#       _echo "error" "Unable to uninstall homebrew formula"
-#       exit 1
-#     fi
-#   fi
-#
-#   if [[ $(brew list --cask) ]]; then
-#     _echo "info" "Uninstalling pre-existing homebrew casks"
-#
-#     # shellcheck disable=SC2046
-#     if ! brew remove --cask --force $(brew list --cask); then
-#       _echo "error" "Unable to uninstall homebrew casks"
-#       exit 1
-#     fi
-#   fi
-#
-#   _echo "info" "Uninstalling existing homebrew installation"
-#
-#   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"; then
-#     _echo "error" "Unable to uninstall homebrew"
-#     exit 1
-#   fi
-# fi
 
 # if homebrew isn't found, attempt to source it
 if ! command -v brew >/dev/null 2>&1; then
@@ -246,21 +201,6 @@ if [[ -f "$HOME/Brewfile" ]]; then
   fi
 fi
 
-# install vim-plug
-# https://github.com/junegunn/vim-plug#installation
-
-# TODO: Add this back in or remove it after trying to install neovim + plugins
-
-# if [ ! -f "${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim" ]; then
-#   _echo "info" "Installing vim-plug"
-#
-#   if ! sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
-#     --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'; then
-#     _echo "error" "Unable to install vim-plug"
-#     exit 1
-#   fi
-# fi
-
 # install all required homebrew dependencies
 for package in "${homebrew_dependencies[@]}"; do
   _echo "info" "Validating required dependency $package is installed"
@@ -276,15 +216,20 @@ for package in "${homebrew_dependencies[@]}"; do
   fi
 done
 
-# # install all required python dependencies
-# for package in "${python_dependencies[@]}"; do
-#   _echo "info" "Validating $package is installed"
-#
-#   if ! command pip3 install "$package"; then
-#     _echo "error" "Unable to install pip3 package $package"
-#     exit 1
-#   fi
-# done
+# install fisher
+# https://github.com/jorgebucaran/fisher#installation
+if ! curl -sL https://git.io/fisher | source; then
+  _echo "error" "Unable to install fisher"
+  exit 1
+fi
+
+# install fisher plugins if any are listed in the fish config
+if [ -f "$HOME/.config/fish/fish_plugins" ]; then
+  if ! fisher update; then
+    _echo "error" "Unable to install fisher plugins"
+    exit 1
+  fi
+fi
 
 # generate Ed25519 key pair by authenticating with GitHub
 if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then

@@ -11,9 +11,10 @@ function docker -w docker
       command docker images -qa | xargs command docker rmi -f
     # start the tdn server
     case tdn
-      az acr login -n fiatechcontainerrepository \
+      command az acr login -n fiatechcontainerrepository \
         && command docker build -t fiatech/transparency-ui-service -f src/app/TransparencyUIService/Dockerfile-TransparencyUIServiceGRPC . \
-        && docker-compose --env-file ./src/app/TransparencyUIService/.env.development -f compose/transparencyui/docker-compose.transparency.yaml up
+        && command docker build -t fiatech/matching-ui-service -f src/app/MatchingGrpc/Dockerfile-MatchingUIServiceGRPC . \
+        && command docker-compose --env-file ./src/app/TransparencyUIService/.env.development -f compose/transparencyui/docker-compose.transparency.yaml up
     # execute docker normally
     case '*'
       command docker $argv[1]
