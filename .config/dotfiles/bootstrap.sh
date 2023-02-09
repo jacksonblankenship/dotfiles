@@ -132,8 +132,8 @@ if ! command -v asdf >/dev/null 2>&1; then
     exit 1
   fi
 
-  # symlink asdf completions to fish config
-  if [[ -f $HOME/.asdf/completions/asdf.fish ]]; then
+  # symlink asdf completions to fish config if they're not already present
+  if [[ -f $HOME/.asdf/completions/asdf.fish ]] && [[ ! -f $HOME/.config/fish/completions/asdf.fish ]]; then
     mkdir -p "$HOME/.config/fish/completions"
     ln -s "$HOME/.asdf/completions/asdf.fish" "$HOME/.config/fish/completions"
   fi
