@@ -34,6 +34,11 @@ jobs:
       - name: Check syntax in changed fish files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "Checking syntax for $file"
-            cat "$file" | fish -n
+            echo "Checking $file"
+            
+            if cat "$file" | fish -n; then
+              echo "No syntax errors found in $file"
+            else
+              echo "Syntax error discovered in $file"
+            fi
           done
