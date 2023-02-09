@@ -11,10 +11,19 @@ set --export EDITOR nvim
 set --export VISUAL nvim
 
 # initialize asdf
-source ~/.asdf/asdf.fish
+source "$HOME/.asdf/asdf.fish"
 
 # initialize homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval (/opt/homebrew/bin/brew shellenv)
+
+# install fisher if not found
+if status is-interactive && ! functions --query fisher
+    # install fisher
+    curl -sL https://git.io/fisher | source
+
+    # install all plugins listed under .config/fish/fish_plugins
+    fisher update
+end
 
 # configure interactive sessions
 if status is-interactive

@@ -1,12 +1,19 @@
-name: Smoke Test CI
+name: Smoke Test
 
-on: [push]
+on:
+  push:
+    paths:
+      - ".Brewfile"
+      - ".tool-versions"
+      - ".config/dotfiles/bootstrap.sh"
+      - ".github/workflows/smoke.yml"
 
 jobs:
-  build:
-    runs-on: macOS-latest
+  bootstrap:
+    runs-on: macOS-12
 
     steps:
       - uses: actions/checkout@v3
-      - name: Execute full install
+      - name: Execute bootstrap script
+        shell: bash
         run: bash .config/dotfiles/bootstrap.sh

@@ -60,7 +60,7 @@ _echo() {
   esac
 }
 
-# skip user interaction in CI
+# skip user interaction in ci
 if [[ -z "$CI" ]]; then
   # verify the user knows wtf they're about to do
   echo
@@ -208,7 +208,7 @@ _echo "info" "Installing packages using Brewfile"
 
 # homebrew package installation
 if [[ -f "$HOME/.Brewfile" ]]; then
-  if ! brew bundle install; then
+  if ! brew bundle install --global; then
     _echo "error" "Unable to install packages using Brewfile"
     exit 1
   fi
@@ -229,39 +229,27 @@ for package in "${homebrew_dependencies[@]}"; do
   fi
 done
 
-# install fisher
-# https://github.com/jorgebucaran/fisher#installation
-if ! curl -sL https://git.io/fisher | source; then
-  _echo "error" "Unable to install fisher"
-  exit 1
-fi
+# skip github key generation and https => ssh protocol switch in ci
+if [[ -z "$CI" ]]; then
+  # generate Ed25519 key pair by authenticating with GitHub
+  if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
+    # if currently authenticated with GitHub, sign out
+    if gh auth status >/dev/null 2>&1; then
 
-# install fisher plugins if any are listed in the fish config
-if [ -f "$HOME/.config/fish/fish_plugins" ]; then
-  if ! fisher update; then
-    _echo "error" "Unable to install fisher plugins"
-    exit 1
-  fi
-fi
+      _echo "info" "Logging out of gh-cli"
 
-# generate Ed25519 key pair by authenticating with GitHub
-if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
-  # if currently authenticated with GitHub, sign out
-  if gh auth status >/dev/null 2>&1; then
+      if ! gh auth logout; then
+        _echo "error" "Unable to log out of gh-cli"
+        exit 1
+      fi
+    fi
 
-    _echo "info" "Logging out of gh-cli"
+    _echo "info" "Authenticating with GitHub"
 
-    if ! gh auth logout; then
-      _echo "error" "Unable to log out of gh-cli"
+    if ! gh auth login --hostname github.com --git-protocol ssh --web; then
+      _echo "error" "Unable to authenticate with GitHub"
       exit 1
     fi
-  fi
-
-  _echo "info" "Authenticating with GitHub"
-
-  if ! gh auth login --hostname github.com --git-protocol ssh --web; then
-    _echo "error" "Unable to authenticate with GitHub"
-    exit 1
   fi
 fi
 
@@ -280,7 +268,7 @@ if [[ "$(gh config get editor)" != "nvim" ]]; then
   gh config set editor nvim
 fi
 
-# install all required python dependencies
+# create standard directories
 for directory in "${directories[@]}"; do
   if [[ ! -d $directory ]]; then
     _echo "info" "Creating directory $directory"
