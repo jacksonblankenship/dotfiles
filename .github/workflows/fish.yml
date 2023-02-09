@@ -17,7 +17,7 @@ on: [push]
 jobs:
   fish:
     name: Fish
-    runs-on: ubuntu-latest
+    runs-on: macOS-12
     steps:
       - name: Checkout files
         uses: actions/checkout@v3
