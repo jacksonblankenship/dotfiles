@@ -212,7 +212,7 @@ ls -la "$HOME"
 
 # homebrew package installation
 if [[ -f "$HOME/.Brewfile" ]]; then
-  if ! brew bundle install; then
+  if ! brew bundle install --global; then
     _echo "error" "Unable to install packages using Brewfile"
     exit 1
   fi
