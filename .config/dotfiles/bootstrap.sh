@@ -58,15 +58,18 @@ _echo() {
   esac
 }
 
-# verify the user knows wtf they're about to do
-echo
-read -p $'\e[1;33m[ ⚠️ ]\e[0m This is a destructive process that will replace your existing dotfiles. Are you sure you want to continue? (Y/n) ' -n 1 -r
-echo
+# skip user interaction in CI
+if [[ -z "$CI" ]]; then
+  # verify the user knows wtf they're about to do
+  echo
+  read -p $'\e[1;33m[ ⚠️ ]\e[0m This is a destructive process that will replace your existing dotfiles. Are you sure you want to continue? (Y/n) ' -n 1 -r
+  echo
 
-# abort if the user doesn't consent
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-  _echo "info" "Aborting..."
-  exit 1
+  # abort if the user doesn't consent
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    _echo "info" "Aborting..."
+    exit 1
+  fi
 fi
 
 # validate the current system is running macOS
