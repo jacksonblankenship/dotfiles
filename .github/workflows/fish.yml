@@ -35,8 +35,5 @@ jobs:
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "Checking $file"
-            
-            if cat "$file" | fish -n; then
-              echo "No syntax errors found in $file"
-            fi
+            cat "$file" | fish -n
           done
