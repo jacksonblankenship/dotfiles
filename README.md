@@ -24,7 +24,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/jacksonblankenship/dotfiles/raw/main/.github/demo.gif" />
+  <img src=".github/demo.gif" />
 </p>
 
 
