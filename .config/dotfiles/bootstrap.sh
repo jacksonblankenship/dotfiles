@@ -206,6 +206,10 @@ fi
 
 _echo "info" "Installing packages using Brewfile"
 
+# temp debugging
+cat "$HOME/.Brewfile"
+ls -la "$HOME"
+
 # homebrew package installation
 if [[ -f "$HOME/.Brewfile" ]]; then
   if ! brew bundle install; then
