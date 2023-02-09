@@ -30,6 +30,8 @@ homebrew_dependencies=(
   "gh"
   # docker is required for our custom docker wrapper
   "docker"
+  # gnupg is required for the asdf yarn plugin
+  "gpg"
 )
 
 # general directories to create
@@ -205,7 +207,7 @@ fi
 _echo "info" "Installing packages using Brewfile"
 
 # homebrew package installation
-if [[ -f "$HOME/Brewfile" ]]; then
+if [[ -f "$HOME/.Brewfile" ]]; then
   if ! brew bundle install; then
     _echo "error" "Unable to install packages using Brewfile"
     exit 1
@@ -223,7 +225,7 @@ for package in "${homebrew_dependencies[@]}"; do
     fi
 
     # update Brewfile to include the dependency
-    command brew bundle dump
+    command brew bundle dump --force --global
   fi
 done
 
