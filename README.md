@@ -44,4 +44,4 @@ The following command will execute the bootstrap script, preparing the environme
 
 # Usage
 
-After bootstrap, you'll have a fish function, `dotfiles`, available in your environment. Use this alias as you would typically use Git. Keep in mind that we're working with a bare git repository, so there are a few quirks to keep an eye out for. Pushing and pulling work just fine. I recommend that you be specific about what you're attempting to interface with (i.e. `dotfiles push origin main` or `dotfiles pull origin main`).
+After bootstrap, you'll have a fish function, `dot`, available in your environment. Use this alias as you would typically use Git. Keep in mind that we're working with a bare git repository, so there are a few quirks to keep an eye out for. Pushing and pulling work just fine. I recommend that you be specific about what you're attempting to interface with (i.e. `dot push origin main` or `dot pull origin main`).
