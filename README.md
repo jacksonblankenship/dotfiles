@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  Jackson's Dotfiles
+  ❯ dotfiles by jax
   <br>
 </h1>
 
@@ -16,7 +16,7 @@
   </a>
 </p>
 
-<p align="center">My personal and <i>highly opinionated</i> macOS configuration, built with <a href="https://fishshell.com/" target="_blank">fish</a> and <a href="https://sw.kovidgoyal.net/kitty" target="_blank">kitty</a>. This dotfile management solution was inspired by <a href="https://news.ycombinator.com/item?id=11071754" target="_blank">SneakyCobra's post</a> on HackerNews. If you're looking for a friendlier explanation, Atlassian has a <a href="https://www.atlassian.com/git/tutorials/dotfiles" target="_blank">great post</a> that I'd recommend you check out.</p>
+<p align="center">My personal and <i>highly opinionated</i> macOS configuration, powered by <a href="https://fishshell.com/" target="_blank">fish</a> and <a href="https://sw.kovidgoyal.net/kitty" target="_blank">kitty</a>. This dotfile management solution was inspired by <a href="https://news.ycombinator.com/item?id=11071754" target="_blank">SneakyCobra's post</a> on HackerNews. If you're looking for a friendlier explanation, Atlassian has a <a href="https://www.atlassian.com/git/tutorials/dotfiles" target="_blank">great post</a> that I'd recommend you check out.</p>
 
 <p align="center">
   <a href="#installation">Installation</a> •
