@@ -28,7 +28,7 @@ end
 # configure interactive sessions
 if status is-interactive
     # give neofetch some breathing room
-    echo -e "\n"
+    printf "\n"
 
     # show neofetch
     neofetch
