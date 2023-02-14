@@ -29,11 +29,5 @@ function update --description "Update dependencies for asdf, homebrew, fisher an
     echo (set_color red) "[ ❌ ] Failed to update fisher and all fisher plugins" (set_color normal)
     return 1
   end
-
-  echo (set_color green) "[ ✅ ] Updating neovim plugins" (set_color normal)
-  if ! command nvim +PlugUpdate +qa
-    echo (set_color red) "[ ❌ ] Failed to update neovim plugins" (set_color normal)
-    return 1
-  end
 end
 
