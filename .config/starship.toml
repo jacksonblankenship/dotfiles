@@ -81,7 +81,7 @@ $shell\
 $character"""
 
 [custom.wip]
-command="echo \"⚠️ Work in Progress\""
+command="echo \"🚧 Work in Progress\""
 when="git -c log.showSignature=false log -n 1 2>/dev/null | grep -q -- \"--wip--\""
 style="bold yellow"
 format = '[$output]($style) '
