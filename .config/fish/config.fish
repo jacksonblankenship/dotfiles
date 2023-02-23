@@ -10,11 +10,11 @@ set --export EDITOR nvim
 # set default visual to nvim
 set --export VISUAL nvim
 
-# initialize asdf
-source "$HOME/.asdf/asdf.fish"
-
 # initialize homebrew
 eval (/opt/homebrew/bin/brew shellenv)
+
+# initialize asdf
+source "$HOME/.asdf/asdf.fish"
 
 # install fisher if not found
 if status is-interactive && ! functions --query fisher
