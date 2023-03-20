@@ -175,6 +175,12 @@ if ! asdf plugin add yarn; then
   exit 1
 fi
 
+# add python plugin to asdf
+if ! asdf plugin add python; then
+  _echo "error" "Unable to add python plugin to asdf"
+  exit 1
+fi
+
 _echo "info" "Installing tool verions listed in $asdf_tool_versions"
 
 # install versions listed under .tool-versions
