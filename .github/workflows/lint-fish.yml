@@ -1,4 +1,4 @@
-name: FishCheck
+name: lint-fish
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   fishcheck:
-    name: FishCheck
+    name: lint-fish
     runs-on: macOS-12
     steps:
       - name: Checkout files
