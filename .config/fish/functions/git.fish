@@ -13,7 +13,7 @@ function git --wraps git
       git checkout main
       git fetch --all -Pp
       git rebase origin/main
-      git branch | grep -v "main" | xargs git branch -D
+      git branch | grep -v " main" | xargs git branch -D
       git status
     # execute git normally
     case '*'
