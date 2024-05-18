@@ -16,6 +16,8 @@ dotfiles_git_dir="$HOME/.${dotfiles_repo_name}"
 
 # homebrew dependencies required for this shell's core configuration
 homebrew_dependencies=(
+  # coreutils so we're working with the latest versions of common utilities
+  "coreutils"
   # default shell
   "fish"
   # default editor
@@ -30,8 +32,6 @@ homebrew_dependencies=(
   "gh"
   # docker is required for our custom docker wrapper
   "docker"
-  # az is required for our custom docker wrapper
-  "az"
 )
 
 # general directories to create
@@ -213,7 +213,7 @@ if [[ -f "$HOME/.Brewfile" ]]; then
   fi
 fi
 
-# install all required homebrew dependencies
+# install all required homebrew dependencies (validates script-specific dependencies are installed)
 for package in "${homebrew_dependencies[@]}"; do
   _echo "info" "Validating required dependency $package is installed"
 
