@@ -1,46 +1,38 @@
 #!/usr/bin/env bash
 
-# github information
-# if this is modified, ~/.config/fish/functions/dotfiles.fish should be updated
+# GitHub configuration
+# If modified, update ~/.config/fish/functions/dotfiles.fish
 github_username="jacksonblankenship"
 dotfiles_repo_name="dotfiles"
 
-# https/ssh urls for the dotfiles repository on github
+# URLs for the dotfiles repository
 dotfiles_path="${github_username}/${dotfiles_repo_name}.git"
 dotfiles_https="https://github.com/${dotfiles_path}"
 dotfiles_ssh="git@github.com:${dotfiles_path}"
 
-# local git repo information for dotfiles
+# Local git repository paths
 dotfiles_work_tree="$HOME"
 dotfiles_git_dir="$HOME/.${dotfiles_repo_name}"
 
-# homebrew dependencies required for this shell's core configuration
+# Homebrew dependencies for core configuration
 homebrew_dependencies=(
-  # coreutils so we're working with the latest versions of common utilities
-  "coreutils"
-  # default shell
-  "fish"
-  # default editor
-  "nvim"
-  # ls replacement
-  "exa"
-  # cat replacement
-  "ccat"
-  # fish shell theme
-  "starship"
-  # directly interface with github and auto-configure ssh
-  "gh"
-  # docker is required for our custom docker wrapper
-  "docker"
+  "coreutils" # Latest versions of common utilities
+  "fish"      # Default shell
+  "nvim"      # Default editor
+  "lsd"       # LS replacement
+  "ccat"      # Cat replacement
+  "starship"  # Fish shell theme
+  "gh"        # GitHub CLI
+  "docker"    # Docker
 )
 
-# general directories to create
+# Directories to create
 directories=(
   "$HOME/projects"
   "$HOME/tmp"
 )
 
-# general purpose logging utility
+# Logging utility
 _echo() {
   case "$1" in
   error)
@@ -53,27 +45,27 @@ _echo() {
     printf "\\n\\e[1;33m[ ⚠️ ]\\e[0m %s\\n" "$2"
     ;;
   *)
-    echo "Improper useage of logger"
+    echo "Improper usage of logger"
     exit 1
     ;;
   esac
 }
 
-# skip user interaction in ci
+# Skip user interaction in CI
 if [[ -z "$CI" ]]; then
-  # verify the user knows wtf they're about to do
+  # Confirm user's intent to proceed
   echo
-  read -p $'\e[1;33m[ ⚠️ ]\e[0m This is a destructive process that will replace your existing dotfiles. Are you sure you want to continue? (Y/n) ' -n 1 -r
+  read -p $'\e[1;33m[ ⚠️ ]\e[0m This process will overwrite your existing dotfiles. Continue? (Y/n) ' -n 1 -r
   echo
 
-  # abort if the user doesn't consent
+  # Abort if user does not consent
   if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     _echo "info" "Aborting..."
     exit 1
   fi
 fi
 
-# Verifying macOS system
+# Verify macOS system
 if [[ ! "$OSTYPE" == "darwin"* ]]; then
   _echo "error" "This script is only compatible with macOS systems."
   exit 1
@@ -85,43 +77,37 @@ if ! xcode-select -p >/dev/null 2>&1; then
   exit 1
 fi
 
-# clone dotfiles
-# you can read more about this concept here
-# https://www.atlassian.com/git/tutorials/dotfiles
-
+# Clone dotfiles repository
+# @link https://www.atlassian.com/git/tutorials/dotfiles
 _echo "info" "Cloning dotfiles from $dotfiles_https"
 
-# remove conflicting directory if one exists
+# Remove conflicting directory if it exists
 if [[ -d "$dotfiles_git_dir" ]]; then
   rm -rf "$dotfiles_git_dir"
 fi
 
-# clone the dotfiles
+# Clone the dotfiles repository
 if git clone --bare "$dotfiles_https" "$dotfiles_git_dir"; then
-
   _echo "info" "Checking out dotfiles to $dotfiles_work_tree"
 
-  # checkout the dotfiles to the home directory, override conflicts
+  # Checkout dotfiles to the home directory, overriding conflicts
   git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" checkout --force
 
-  # instruct git to ignore untracked files
+  # Instruct git to ignore untracked files
   git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" config --local status.showUntrackedFiles no
 else
   _echo "error" "Unable to clone dotfiles"
   exit 1
 fi
 
-# install asdf
-# asdf **highly recommends** that we install with git, so that's what we'll do
+# Install asdf
 # @link https://asdf-vm.com/guide/getting-started.html#_2-download-asdf
-
 asdf_dir="$HOME/.asdf"
 asdf_tool_versions="$HOME/.tool-versions"
 
 _echo "info" "Installing asdf"
 
 if ! command -v asdf >/dev/null 2>&1; then
-
   if [[ -d "$asdf_dir" ]]; then
     rm -rf "$asdf_dir"
   fi
@@ -131,7 +117,7 @@ if ! command -v asdf >/dev/null 2>&1; then
     exit 1
   fi
 
-  # symlink asdf completions to fish config if they're not already present
+  # Symlink asdf completions to fish config if not already present
   if [[ -f $HOME/.asdf/completions/asdf.fish ]] && [[ ! -f $HOME/.config/fish/completions/asdf.fish ]]; then
     _echo "info" "Symlinking asdf fish completions"
 
@@ -139,40 +125,37 @@ if ! command -v asdf >/dev/null 2>&1; then
     ln -s "$HOME/.asdf/completions/asdf.fish" "$HOME/.config/fish/completions"
   fi
 
-  # temporarially source asdf for purposes of installation
+  # Temporarily source asdf for installation purposes
   # shellcheck source=/dev/null
   . "$asdf_dir/asdf.sh"
 fi
 
-# asdf configurations
-# update asdf and, add nodejs and python plugins, and install versions against .tool-versions
-# https://asdf-vm.com/manage/core.html
-
+# Configure asdf
 _echo "info" "Updating asdf"
 
-# update asdf as the given branch in this script may be out of date
+# Update asdf as the given branch may be out of date
 if ! asdf update; then
-  _echo "error" "Failed to run update command for adsf"
+  _echo "error" "Failed to update asdf"
   exit 1
 fi
 
 _echo "info" "Adding nodejs plugin to asdf"
 
-# add node.js plugin to asdf
+# Add Node.js plugin to asdf
 if ! asdf plugin add nodejs; then
-  _echo "error" "Unable to add nodejs plugin to adsf"
+  _echo "error" "Unable to add nodejs plugin to asdf"
   exit 1
 fi
 
-# add python plugin to asdf
+# Add Python plugin to asdf
 if ! asdf plugin add python; then
   _echo "error" "Unable to add python plugin to asdf"
   exit 1
 fi
 
-_echo "info" "Installing tool verions listed in $asdf_tool_versions"
+_echo "info" "Installing tool versions listed in $asdf_tool_versions"
 
-# install versions listed under .tool-versions
+# Install versions listed in .tool-versions
 if [[ ! -f "$asdf_tool_versions" ]]; then
   _echo "error" "Unable to locate asdf tool versions at $asdf_tool_versions"
   exit 1
@@ -183,29 +166,29 @@ else
   fi
 fi
 
-# if homebrew isn't found, attempt to source it
+# Ensure Homebrew is installed
 if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# if homebrew still isn't found, install it
+# Install Homebrew if not found
 if ! command -v brew >/dev/null 2>&1; then
   _echo "info" "Homebrew not found. Attempting to install Homebrew..."
 
-  # install homebrew
+  # Install Homebrew
   # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
     _echo "error" "Unable to install Homebrew"
     exit 1
   fi
 
-  # source homebrew for purposes of installation
+  # Source Homebrew for installation purposes
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-_echo "info" "Starting installation of required Homebrew dependencies..."
+_echo "info" "Installing required Homebrew dependencies..."
 
-# Install all required Homebrew dependencies (validates script-specific dependencies are installed)
+# Install all required Homebrew dependencies
 for package in "${homebrew_dependencies[@]}"; do
   _echo "info" "Ensuring $package is installed..."
   if ! brew list "$package" >/dev/null 2>&1; then
@@ -216,9 +199,9 @@ for package in "${homebrew_dependencies[@]}"; do
   fi
 done
 
-# skip nerd fonts installation in ci
+# Skip Nerd Fonts installation in CI
 if [[ -z "$CI" ]]; then
-  _echo "info" "Starting installation of all Nerd Fonts..."
+  _echo "info" "Installing Nerd Fonts..."
 
   # Install all Nerd Fonts
   # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
@@ -243,17 +226,16 @@ if [[ -f "$HOME/.Brewfile" ]]; then
   fi
 fi
 
-# skip github key generation and https => ssh protocol switch in ci
+# Skip GitHub key generation and HTTPS to SSH protocol switch in CI
 if [[ -z "$CI" ]]; then
-  # generate Ed25519 key pair by authenticating with GitHub
+  # Generate Ed25519 key pair by authenticating with GitHub
   if [ ! -f "$HOME/.ssh/id_ed25519.pub" ]; then
-    # if currently authenticated with GitHub, sign out
+    # If authenticated with GitHub, sign out
     if gh auth status >/dev/null 2>&1; then
-
-      _echo "info" "Logging out of gh-cli"
+      _echo "info" "Logging out of GitHub CLI"
 
       if ! gh auth logout; then
-        _echo "error" "Unable to log out of gh-cli"
+        _echo "error" "Unable to log out of GitHub CLI"
         exit 1
       fi
     fi
@@ -269,15 +251,15 @@ fi
 
 _echo "info" "Changing dotfiles repo protocol to SSH"
 
-# change the bare repo's git protocol from https to ssh
+# Change the dotfiles repository protocol from HTTPS to SSH
 if ! git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" remote set-url origin "$dotfiles_ssh"; then
   _echo "error" "Unable to change dotfiles repo protocol to SSH"
   exit 1
 fi
 
-# set the default git editor to neovim
+# Set the default Git editor to Neovim
 if [[ "$(gh config get editor)" != "nvim" ]]; then
-  _echo "info" "Changing default git editor to neovim"
+  _echo "info" "Setting default Git editor to Neovim"
 
   gh config set editor nvim
 fi
@@ -293,19 +275,19 @@ for directory in "${directories[@]}"; do
   fi
 done
 
+# Add fish to /etc/shells if not present
 if ! grep "$(which fish)" /etc/shells >/dev/null 2>&1; then
   _echo "info" "Adding $(which fish) to /etc/shells"
 
-  # add fish to /etc/shells
   which fish | sudo tee -a /etc/shells
 fi
 
 _echo "info" "Changing default shell to fish"
 
-# skip chsh in ci
+# Skip changing shell in CI
 if [[ -z "$CI" ]]; then
-  # change default shell to fish
+  # Change default shell to fish
   chsh -s "$(which fish)"
 fi
 
-_echo "info" "Bootstrap complete. Changes will take effect next time you create a terminal session."
+_echo "info" "Bootstrap complete. Changes will take effect in the next terminal session."
