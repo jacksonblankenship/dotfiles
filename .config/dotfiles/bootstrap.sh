@@ -216,13 +216,16 @@ if [[ -z "$CI" ]]; then
   fi
 fi
 
-_echo "info" "Installing Homebrew packages from Brewfile..."
+# Skip Brewfile installation in CI
+if [[ -z "$CI" ]]; then
+  _echo "info" "Installing Homebrew packages from Brewfile..."
 
-# Install Homebrew packages using Brewfile
-if [[ -f "$HOME/.Brewfile" ]]; then
-  if ! brew bundle install --global; then
-    _echo "error" "Failed to install packages using Brewfile."
-    exit 1
+  # Install Homebrew packages using Brewfile
+  if [[ -f "$HOME/.Brewfile" ]]; then
+    if ! brew bundle install --global; then
+      _echo "error" "Failed to install packages using Brewfile."
+      exit 1
+    fi
   fi
 fi
 
