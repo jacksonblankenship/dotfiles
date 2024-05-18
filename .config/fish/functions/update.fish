@@ -24,6 +24,12 @@ function update --description "Update dependencies for asdf, homebrew, fisher an
     return 1
   end
 
+  echo (set_color green) "[ ✅ ] Upgrading homebrew casks" (set_color normal)
+  if ! command brew upgrade --cask --greedy
+    echo (set_color red) "[ ❌ ] Failed to upgrade homebrew casks" (set_color normal)
+    return 1
+  end
+
   echo (set_color green) "[ ✅ ] Updating fisher and all fisher plugins" (set_color normal)
   if ! fisher update
     echo (set_color red) "[ ❌ ] Failed to update fisher and all fisher plugins" (set_color normal)
