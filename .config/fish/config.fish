@@ -19,6 +19,9 @@ source "$HOME/.asdf/asdf.fish"
 # add yarn to fish path
 fish_add_path "$HOME/.yarn/bin/"
 
+# add local bin to fish path
+fish_add_path "$HOME/.local/bin/"
+
 # install fisher if not found
 if status is-interactive && ! functions --query fisher
     # install fisher
@@ -27,6 +30,17 @@ if status is-interactive && ! functions --query fisher
     # install all plugins listed under .config/fish/fish_plugins
     fisher update
 end
+
+# pnpm
+set -gx PNPM_HOME "/Users/jacksonblankenship/Library/pnpm"
+if not string match -q -- $PNPM_HOME $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
+end
+
+# pnpm end
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/fish/__tabtab.fish ]; and . ~/.config/tabtab/fish/__tabtab.fish; or true
 
 # configure interactive sessions
 if status is-interactive
@@ -40,3 +54,5 @@ if status is-interactive
     starship init fish | source
 end
 
+# sst
+fish_add_path /Users/jacksonblankenship/.sst/bin
