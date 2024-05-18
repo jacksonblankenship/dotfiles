@@ -8,11 +8,11 @@
   <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml">
     <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/smoke.yml/badge.svg">
   </a>
-  <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/shellcheck.yml">
-    <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/shellcheck.yml/badge.svg">
+  <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/lint-bash.yml">
+    <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/lint-bash.yml/badge.svg">
   </a>
-  <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/fishcheck.yml">
-    <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/fishcheck.yml/badge.svg">
+  <a href="https://github.com/jacksonblankenship/dotfiles/actions/workflows/lint-fish.yml">
+    <img src="https://github.com/jacksonblankenship/dotfiles/actions/workflows/lint-fish.yml/badge.svg">
   </a>
 </p>
 
@@ -26,7 +26,6 @@
 <p align="center">
   <img src=".github/demo.gif" />
 </p>
-
 
 # Installation
 
