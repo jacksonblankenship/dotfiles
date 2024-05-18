@@ -73,15 +73,15 @@ if [[ -z "$CI" ]]; then
   fi
 fi
 
-# validate the current system is running macOS
+# Verifying macOS system
 if [[ ! "$OSTYPE" == "darwin"* ]]; then
   _echo "error" "This script is only compatible with macOS systems."
   exit 1
 fi
 
-# validate command line tools are installed
+# Ensure command line tools are installed
 if ! xcode-select -p >/dev/null 2>&1; then
-  _echo "error" "This script requires the command line developer tools. Please run xcode-select --install and try again."
+  _echo "error" "Command line developer tools are required. Run 'xcode-select --install' and try again."
   exit 1
 fi
 
@@ -190,12 +190,12 @@ fi
 
 # if homebrew still isn't found, install it
 if ! command -v brew >/dev/null 2>&1; then
-  _echo "info" "Installing homebrew"
+  _echo "info" "Homebrew not found. Attempting to install Homebrew..."
 
   # install homebrew
   # https://github.com/homebrew/install#install-homebrew-on-macos-or-linux
   if ! /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; then
-    _echo "error" "Unable to install homebrew"
+    _echo "error" "Unable to install Homebrew"
     exit 1
   fi
 
@@ -203,30 +203,45 @@ if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-_echo "info" "Installing packages using Brewfile"
+_echo "info" "Starting installation of required Homebrew dependencies..."
 
-# homebrew package installation
-if [[ -f "$HOME/.Brewfile" ]]; then
-  if ! brew bundle install --global; then
-    _echo "error" "Unable to install packages using Brewfile"
+# Install all required Homebrew dependencies (validates script-specific dependencies are installed)
+for package in "${homebrew_dependencies[@]}"; do
+  _echo "info" "Ensuring $package is installed..."
+  if ! brew list "$package" >/dev/null 2>&1; then
+    if ! brew install "$package"; then
+      _echo "error" "Failed to install Homebrew package $package."
+      exit 1
+    fi
+  fi
+done
+
+# skip nerd fonts installation in ci
+if [[ -z "$CI" ]]; then
+  _echo "info" "Starting installation of all Nerd Fonts..."
+
+  # Install all Nerd Fonts
+  # https://gist.github.com/davidteren/898f2dcccd42d9f8680ec69a3a5d350e
+  if brew tap homebrew/cask-fonts; then
+    if ! brew search '/font-.*-nerd-font/' | awk '{ print $1 }' | xargs -I{} brew install --cask {}; then
+      _echo "error" "Failed to install some or all Nerd Fonts."
+      exit 1
+    fi
+  else
+    _echo "error" "Failed to tap homebrew/cask-fonts."
     exit 1
   fi
 fi
 
-# install all required homebrew dependencies (validates script-specific dependencies are installed)
-for package in "${homebrew_dependencies[@]}"; do
-  _echo "info" "Validating required dependency $package is installed"
+_echo "info" "Installing Homebrew packages from Brewfile..."
 
-  if ! command brew list "$package" >/dev/null 2>&1; then
-    if ! command brew install "$package"; then
-      _echo "error" "Unable to install homebrew package $package"
-      exit 1
-    fi
-
-    # update Brewfile to include the dependency
-    command brew bundle dump --force --global
+# Install Homebrew packages using Brewfile
+if [[ -f "$HOME/.Brewfile" ]]; then
+  if ! brew bundle install --global; then
+    _echo "error" "Failed to install packages using Brewfile."
+    exit 1
   fi
-done
+fi
 
 # skip github key generation and https => ssh protocol switch in ci
 if [[ -z "$CI" ]]; then
@@ -267,12 +282,14 @@ if [[ "$(gh config get editor)" != "nvim" ]]; then
   gh config set editor nvim
 fi
 
-# create standard directories
+# Create standard directories
 for directory in "${directories[@]}"; do
   if [[ ! -d $directory ]]; then
     _echo "info" "Creating directory $directory"
-
-    mkdir -p "$directory"
+    if ! mkdir -p "$directory"; then
+      _echo "error" "Failed to create directory $directory"
+      exit 1
+    fi
   fi
 done
 
