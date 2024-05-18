@@ -32,6 +32,7 @@ set -gx PNPM_HOME "/Users/jacksonblankenship/Library/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
     set -gx PATH "$PNPM_HOME" $PATH
 end
+# pnpm end
 
 # Configure interactive sessions
 if status is-interactive
@@ -44,3 +45,5 @@ if status is-interactive
     # Initialize starship theme (only in interactive sessions)
     starship init fish | source
 end
+
+

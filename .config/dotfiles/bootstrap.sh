@@ -171,6 +171,16 @@ else
   fi
 fi
 
+# Install pnpm
+if ! command -v pnpm >/dev/null 2>&1; then
+  _echo "info" "Installing pnpm"
+
+  if ! curl -fsSL https://get.pnpm.io/install.sh | sh -; then
+    _echo "error" "Failed to install pnpm"
+    exit 1
+  fi
+fi
+
 # Ensure Homebrew is installed
 if ! command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
