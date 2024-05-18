@@ -1,7 +1,7 @@
 # replace boring ls with fun ls
 function ls --wraps ls
-  if type -f exa &> /dev/null
-    command exa --group-directories-first --icons --git $argv
+  if type -f lsd &> /dev/null
+    command lsd $argv
   else
     command ls $argv
   end
