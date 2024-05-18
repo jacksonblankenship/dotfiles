@@ -16,9 +16,6 @@ eval (/opt/homebrew/bin/brew shellenv)
 # initialize asdf
 source "$HOME/.asdf/asdf.fish"
 
-# add yarn to fish path
-fish_add_path "$HOME/.yarn/bin/"
-
 # add local bin to fish path
 fish_add_path "$HOME/.local/bin/"
 
