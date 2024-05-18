@@ -39,10 +39,13 @@ _echo() {
     printf "\\n\\e[1;31m[ ❌ ]\\e[0m %s\\n" "$2"
     ;;
   info)
-    printf "\\n\\e[1;32m[ ✅ ]\\e[0m %s\\n" "$2"
+    printf "\\n\\e[1;34m[ ℹ️  ]\\e[0m %s\\n" "$2"
     ;;
   warn)
-    printf "\\n\\e[1;33m[ ⚠️ ]\\e[0m %s\\n" "$2"
+    printf "\\n\\e[1;33m[ ⚠️  ]\\e[0m %s\\n" "$2"
+    ;;
+  success)
+    printf "\\n\\e[1;32m[ ✅ ]\\e[0m %s\\n" "$2"
     ;;
   *)
     echo "Improper usage of logger"
@@ -63,6 +66,8 @@ if [[ -z "$CI" ]]; then
     _echo "info" "Aborting..."
     exit 1
   fi
+else
+  _echo "info" "Skipping user interaction in CI environment."
 fi
 
 # Verify macOS system
@@ -88,7 +93,7 @@ fi
 
 # Clone the dotfiles repository
 if git clone --bare "$dotfiles_https" "$dotfiles_git_dir"; then
-  _echo "info" "Checking out dotfiles to $dotfiles_work_tree"
+  _echo "success" "Checking out dotfiles to $dotfiles_work_tree"
 
   # Checkout dotfiles to the home directory, overriding conflicts
   git --git-dir="$dotfiles_git_dir" --work-tree="$dotfiles_work_tree" checkout --force
@@ -119,7 +124,7 @@ if ! command -v asdf >/dev/null 2>&1; then
 
   # Symlink asdf completions to fish config if not already present
   if [[ -f $HOME/.asdf/completions/asdf.fish ]] && [[ ! -f $HOME/.config/fish/completions/asdf.fish ]]; then
-    _echo "info" "Symlinking asdf fish completions"
+    _echo "success" "Symlinking asdf fish completions"
 
     mkdir -p "$HOME/.config/fish/completions"
     ln -s "$HOME/.asdf/completions/asdf.fish" "$HOME/.config/fish/completions"
@@ -214,6 +219,8 @@ if [[ -z "$CI" ]]; then
     _echo "error" "Failed to tap homebrew/cask-fonts."
     exit 1
   fi
+else
+  _echo "info" "Skipping Nerd Fonts installation in CI environment."
 fi
 
 # Skip Brewfile installation in CI
@@ -227,6 +234,8 @@ if [[ -z "$CI" ]]; then
       exit 1
     fi
   fi
+else
+  _echo "info" "Skipping Brewfile installation in CI environment."
 fi
 
 # Skip GitHub key generation and HTTPS to SSH protocol switch in CI
@@ -250,6 +259,8 @@ if [[ -z "$CI" ]]; then
       exit 1
     fi
   fi
+else
+  _echo "info" "Skipping GitHub key generation and protocol switch in CI environment."
 fi
 
 _echo "info" "Changing dotfiles repo protocol to SSH"
@@ -291,6 +302,8 @@ _echo "info" "Changing default shell to fish"
 if [[ -z "$CI" ]]; then
   # Change default shell to fish
   chsh -s "$(which fish)"
+else
+  _echo "info" "Skipping changing default shell in CI environment."
 fi
 
-_echo "info" "Bootstrap complete. Changes will take effect in the next terminal session."
+_echo "success" "Bootstrap complete. Changes will take effect in the next terminal session."
