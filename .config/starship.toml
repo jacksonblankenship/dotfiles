@@ -80,6 +80,8 @@ $container\
 $shell\
 $character"""
 
+command_timeout=1000
+
 [custom.wip]
 command="echo \"🚧 Work in Progress\""
 when="git -c log.showSignature=false log -n 1 2>/dev/null | grep -q -- \"--wip--\""
