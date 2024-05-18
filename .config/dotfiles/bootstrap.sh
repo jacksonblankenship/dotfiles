@@ -32,15 +32,12 @@ homebrew_dependencies=(
   "docker"
   # az is required for our custom docker wrapper
   "az"
-  # gnupg is required for the asdf yarn plugin
-  "gpg"
 )
 
 # general directories to create
 directories=(
   "$HOME/projects"
   "$HOME/tmp"
-  "$HOME/tmp/userprofile"
 )
 
 # general purpose logging utility
@@ -164,14 +161,6 @@ _echo "info" "Adding nodejs plugin to asdf"
 # add node.js plugin to asdf
 if ! asdf plugin add nodejs; then
   _echo "error" "Unable to add nodejs plugin to adsf"
-  exit 1
-fi
-
-_echo "info" "Adding yarn plugin to asdf"
-
-# add yarn plugin to asdf
-if ! asdf plugin add yarn; then
-  _echo "error" "Unable to add yarn plugin to asdf"
   exit 1
 fi
 
