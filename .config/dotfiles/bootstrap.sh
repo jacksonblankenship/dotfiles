@@ -42,7 +42,7 @@ _echo() {
     printf "\\n\\e[1;34m[ ℹ️ ]\\e[0m %s\\n" "$2"
     ;;
   warn)
-    printf "\\n\\e[1;33m[ ⚠️  ]\\e[0m %s\\n" "$2"
+    printf "\\n\\e[1;33m[ ⚠️ ]\\e[0m %s\\n" "$2"
     ;;
   success)
     printf "\\n\\e[1;32m[ ✅ ]\\e[0m %s\\n" "$2"
