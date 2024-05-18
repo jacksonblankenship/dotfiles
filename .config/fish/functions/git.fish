@@ -9,12 +9,6 @@ function git --wraps git
     # revert a repo out of a "work in progress" state
     case unwip
       command git log -n 1 | command grep -q -c "\-\-wip\-\-" && command git reset HEAD~1
-    case fresh
-      git checkout main
-      git fetch --all -Pp
-      git rebase origin/main
-      git branch | grep -v " main" | xargs git branch -D
-      git status
     # execute git normally
     case '*'
       command git $argv
