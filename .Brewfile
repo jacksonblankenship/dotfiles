@@ -1,6 +1,7 @@
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 brew "ccat"
+brew "coreutils"
 brew "fish"
 brew "freetype"
 brew "fzf"
