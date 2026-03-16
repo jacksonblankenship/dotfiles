@@ -29,8 +29,7 @@ git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME remote set-url origin git@githu
 If step 2 fails due to existing files, back them up first:
 
 ```bash
-mkdir -p $HOME/.dotfiles-backup
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout 2>&1 | grep "^\t" | awk '{print $1}' | xargs -I{} mv {} $HOME/.dotfiles-backup/{}
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout 2>&1 | grep "^\t" | awk '{print $1}' | while read f; do mkdir -p "$HOME/.dotfiles-backup/$(dirname "$f")" && mv "$f" "$HOME/.dotfiles-backup/$f"; done
 git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 ```
 
