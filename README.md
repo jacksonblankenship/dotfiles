@@ -16,25 +16,22 @@ Bare-repo dotfiles managed with a `dot` wrapper around git. The git directory li
 # 1. Clone via HTTPS (SSH isn't available until dotfiles are checked out)
 git clone --bare https://github.com/jacksonblankenship/dotfiles.git $HOME/.dotfiles
 
-# 2. Define a temporary alias (the dot function isn't available yet)
-alias dot="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+# 2. Checkout the files into $HOME
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 
-# 3. Checkout the files into $HOME
-dot checkout
+# 3. Hide untracked files (everything else in $HOME)
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
 
-# 4. Hide untracked files (everything else in $HOME)
-dot config --local status.showUntrackedFiles no
-
-# 5. Switch remote to SSH (now that .ssh/config is in place)
-dot remote set-url origin git@github.com:jacksonblankenship/dotfiles.git
+# 4. Switch remote to SSH (now that .ssh/config is in place)
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME remote set-url origin git@github.com:jacksonblankenship/dotfiles.git
 ```
 
-If step 3 fails due to existing files, back them up first:
+If step 2 fails due to existing files, back them up first:
 
 ```bash
 mkdir -p $HOME/.dotfiles-backup
-dot checkout 2>&1 | grep "^\t" | awk '{print $1}' | xargs -I{} mv {} $HOME/.dotfiles-backup/{}
-dot checkout
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout 2>&1 | grep "^\t" | awk '{print $1}' | xargs -I{} mv {} $HOME/.dotfiles-backup/{}
+git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
 ```
 
 ## Usage
