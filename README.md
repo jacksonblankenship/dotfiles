@@ -13,25 +13,13 @@ Bare-repo dotfiles managed with a `dot` wrapper around git. The git directory li
 ## Fresh Machine Setup
 
 ```bash
-# 1. Clone via HTTPS (SSH isn't available until dotfiles are checked out)
-git clone --bare https://github.com/jacksonblankenship/dotfiles.git $HOME/.dotfiles
-
-# 2. Checkout the files into $HOME
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
-
-# 3. Hide untracked files (everything else in $HOME)
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no
-
-# 4. Switch remote to SSH (now that .ssh/config is in place)
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME remote set-url origin git@github.com:jacksonblankenship/dotfiles.git
+bash <(curl -s https://raw.githubusercontent.com/jacksonblankenship/dotfiles/main/.config/dotfiles/setup.sh)
 ```
 
-If step 2 fails due to existing files, back them up first:
-
-```bash
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout 2>&1 | grep "^\t" | awk '{print $1}' | while read f; do mkdir -p "$HOME/.dotfiles-backup/$(dirname "$f")" && mv "$f" "$HOME/.dotfiles-backup/$f"; done
-git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME checkout
-```
+This will:
+1. Clone the repo as a bare repository to `~/.dotfiles`
+2. Checkout dotfiles into `$HOME` (conflicting files are backed up to `~/.dotfiles-backup`)
+3. Switch the remote from HTTPS to SSH (the 1Password SSH agent config isn't available until after checkout)
 
 ## Usage
 
