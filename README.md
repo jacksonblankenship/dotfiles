@@ -13,12 +13,12 @@ Bare-repo dotfiles managed with a `dot` wrapper around git. The git directory li
 ## Fresh Machine Setup
 
 ```bash
-curl -s https://raw.githubusercontent.com/jacksonblankenship/dotfiles/main/.config/dotfiles/setup.sh | bash
+curl -sH "Cache-Control: no-cache" https://raw.githubusercontent.com/jacksonblankenship/dotfiles/main/.config/dotfiles/setup.sh | bash
 ```
 
 This will:
 1. Clone the repo as a bare repository to `~/.dotfiles`
-2. Checkout dotfiles into `$HOME` (conflicting files are backed up to `~/.dotfiles-backup`)
+2. Checkout dotfiles into `$HOME` (conflicting files are overwritten)
 3. Switch the remote from HTTPS to SSH (the 1Password SSH agent config isn't available until after checkout)
 
 ## Usage
