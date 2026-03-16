@@ -13,8 +13,8 @@ Bare-repo dotfiles managed with a `dot` wrapper around git. The git directory li
 ## Fresh Machine Setup
 
 ```bash
-# 1. Clone the bare repo
-git clone --bare git@github.com:jacksonblankenship/dotfiles.git $HOME/.dotfiles
+# 1. Clone via HTTPS (SSH isn't available until dotfiles are checked out)
+git clone --bare https://github.com/jacksonblankenship/dotfiles.git $HOME/.dotfiles
 
 # 2. Define a temporary alias (the dot function isn't available yet)
 alias dot="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
@@ -24,6 +24,9 @@ dot checkout
 
 # 4. Hide untracked files (everything else in $HOME)
 dot config --local status.showUntrackedFiles no
+
+# 5. Switch remote to SSH (now that .ssh/config is in place)
+dot remote set-url origin git@github.com:jacksonblankenship/dotfiles.git
 ```
 
 If step 3 fails due to existing files, back them up first:
