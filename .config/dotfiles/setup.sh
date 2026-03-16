@@ -13,14 +13,16 @@ dot() {
 if [ -d "$DOTFILES_DIR" ]; then
   echo "Dotfiles repo already exists, fetching latest..."
   dot remote set-url origin "$REPO_HTTPS"
-  dot fetch origin || { echo "Error: fetch failed"; exit 1; }
+  dot fetch origin main || { echo "Error: fetch failed"; exit 1; }
+  ref=FETCH_HEAD
 else
   echo "Cloning dotfiles..."
   git clone --bare "$REPO_HTTPS" "$DOTFILES_DIR" || { echo "Error: clone failed"; exit 1; }
+  ref=HEAD
 fi
 
 # 2. Force checkout — overwrites any conflicting files
-dot reset --hard origin/main || { echo "Error: checkout failed"; exit 1; }
+dot reset --hard "$ref" || { echo "Error: checkout failed"; exit 1; }
 
 # 3. Configure
 dot config --local status.showUntrackedFiles no
