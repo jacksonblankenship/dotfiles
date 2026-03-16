@@ -13,7 +13,7 @@ Bare-repo dotfiles managed with a `dot` wrapper around git. The git directory li
 ## Fresh Machine Setup
 
 ```bash
-curl -sH "Cache-Control: no-cache" https://raw.githubusercontent.com/jacksonblankenship/dotfiles/main/.config/dotfiles/setup.sh | bash
+curl -sH "Accept: application/vnd.github.raw" https://api.github.com/repos/jacksonblankenship/dotfiles/contents/.config/dotfiles/setup.sh | bash
 ```
 
 This will:
